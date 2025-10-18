@@ -36,4 +36,7 @@
 *.out
 *.app
 
+# Project specific executable
+main
+nguoi_dung
 # End of https://www.toptal.com/developers/gitignore/api/c++
