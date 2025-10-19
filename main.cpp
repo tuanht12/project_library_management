@@ -4,7 +4,7 @@
 
 int main() {
     // Initialize the global arrays
-    init_user_array();
+    initialize_user_data();
     // Read user ID
     int user_id;
     printf("Hãy nhập CMND của bạn: ");

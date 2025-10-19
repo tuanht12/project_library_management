@@ -8,7 +8,7 @@ extern char USER_ADDRESSES[100][100];
 extern char USER_CREATION_DATES[100][100];
 
 // Initialize users
-void init_user_array();
+void initialize_user_data();
 
 // Users related functions
 int is_existing_user(int user_id);
