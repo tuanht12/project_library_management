@@ -58,6 +58,11 @@ int is_existing_user(int user_id) { return get_user_internal_id(user_id) != 0; }
 
 // Register a new user
 int register_user(int user_id) {
+    if (is_existing_user(user_id)) {
+        printf("Người dùng với CMND %d đã tồn tại.\n", user_id);
+        return 0;
+    }
+
     clear_input_buffer();
     int user_index = -1;
     char gender_input[10];
