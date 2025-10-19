@@ -10,13 +10,12 @@ int main() {
     printf("Hãy nhập CMND của bạn: ");
     scanf("%d", &user_id);
 
-    int is_existing = is_existing_user(user_id);
-    if (!is_existing && !register_user(user_id)) {
+    if (!is_existing_user(user_id) && !register_user(user_id)) {
         printf("Đăng ký người dùng thất bại. Vui lòng thử lại sau.\n");
         return 0;
     }
 
-    int choice;
+    int choice = 0;
     while (choice != 9) {
         printf("\n\n=== MENU CHÍNH ===\n");
         printf("1. Xem thông tin người dùng\n");
@@ -45,5 +44,5 @@ int main() {
                 break;
         }
     }
-    return 0;
+    return 1;
 }

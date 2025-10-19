@@ -1,8 +1,6 @@
-#include "users.h"
-
+#include "utils.h"
 #include <stdio.h>
 #include <string.h>
-
 #include <iostream>
 
 // Define the global arrays
@@ -27,10 +25,7 @@ char USER_ADDRESSES[100][100];
 
 // Ngày tạo tài khoản của người dùng
 char USER_CREATION_DATES[100][100];
-void clear_input_buffer() {
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF);
-}
+
 
 // Khởi tạo mảng người dùng
 void init_user_array() {

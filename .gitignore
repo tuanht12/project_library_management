@@ -38,5 +38,6 @@
 .clang-format
 # Project specific executable
 main
+menu
 users
 # End of https://www.toptal.com/developers/gitignore/api/c++
