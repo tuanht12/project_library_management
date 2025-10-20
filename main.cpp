@@ -1,8 +1,11 @@
 #include <stdio.h>
 
 #include "users.h"
+#include "utils.h"
+// TEST
+#include "datetime_utils.h"
 
-int main() {
+void run() {
     // Initialize the global arrays
     initialize_user_data();
     // Read user ID
@@ -12,7 +15,7 @@ int main() {
 
     if (!is_existing_user(user_id) && !register_user(user_id)) {
         printf("Đăng ký người dùng thất bại. Vui lòng thử lại sau.\n");
-        return 0;
+        return;
     }
 
     int choice = 0;
@@ -22,6 +25,7 @@ int main() {
         printf("2. Đăng ký người dùng mới\n");
         printf("9. Thoát\n");
         printf("Hãy chọn một tùy chọn: ");
+        clear_input_buffer();
         scanf("%d", &choice);
         switch (choice) {
             case 1:
@@ -44,5 +48,12 @@ int main() {
                 break;
         }
     }
-    return 1;
+}
+
+int main() {
+    run();
+    // char date_str[11];
+    // get_date_string(date_str, 2025, 10, 2);
+    // printf("Expiration Date: %s\n", date_str);
+    return 0;
 }
