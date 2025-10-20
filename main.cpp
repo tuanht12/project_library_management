@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 #include "menu.h"
 #include "users.h"
 #include "utils.h"
