@@ -100,7 +100,8 @@ int register_user(int user_id) {
     printf("Mời bạn nhập email: ");
     safe_input_str(USER_EMAILS[user_index], sizeof(USER_EMAILS[user_index]));
     printf("Mời bạn nhập địa chỉ: ");
-    safe_input_str(USER_ADDRESSES[user_index], sizeof(USER_ADDRESSES[user_index]));
+    safe_input_str(USER_ADDRESSES[user_index],
+                   sizeof(USER_ADDRESSES[user_index]));
     printf("Nhập ngày tạo tài khoản\n");
     input_date(input_year, input_month, input_day);
     USER_CREATION_DATES[user_index][0] = input_year;
@@ -117,7 +118,7 @@ int register_user(int user_id) {
 }
 
 // In thông tin người dùng
-void print_user_info(int user_id) {
+void print_user_info(int user_id, int with_header = 1) {
     int internal_id = get_user_internal_id(user_id);
     if (internal_id == 0) {
         printf("Người dùng với CMND %d không tồn tại.\n", user_id);
@@ -131,7 +132,9 @@ void print_user_info(int user_id) {
     } else {
         strcpy(gender_str, "Nữ");
     }
-    printf("\n===== Thông tin người dùng =====\n");
+    if (with_header) {
+        printf("\n===== Thông tin người dùng =====\n");
+    }
     printf("CMND: %d\n", USERIDS[index]);
     printf("Tên: %s\n", USERNAMES[index]);
     get_date_string(date_str, USER_CREATION_DATES[index][0],
@@ -149,4 +152,14 @@ void print_user_info(int user_id) {
                     USER_EXPIRATION_DATES[index][1],
                     USER_EXPIRATION_DATES[index][2]);
     printf("Ngày hết hạn tài khoản: %s\n", date_str);
+}
+
+void print_all_users() {
+    printf("\n===== Danh sách tất cả người dùng =====\n");
+    for (int i = 0; i < 100; i++) {
+        if (USERIDS[i] != 0) {
+            print_user_info(USERIDS[i], 0);
+            printf("-----------------------------\n");
+        }
+    }
 }

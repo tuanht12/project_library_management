@@ -23,6 +23,7 @@ void run() {
         printf("\n=== MENU CHÍNH ===\n");
         printf("1. Xem thông tin người dùng\n");
         printf("2. Đăng ký người dùng mới\n");
+        printf("3. Xem tất cả người dùng\n");
         printf("9. Thoát\n");
         printf("Hãy chọn một tùy chọn: ");
         scanf("%d", &choice);
@@ -43,6 +44,9 @@ void run() {
                 cleanup_input_buffer();
                 register_user(new_user_id);
             } break;
+            case 3:
+                print_all_users();
+                break;
             case 9:
                 printf("Thoát khỏi hệ thống. Hẹn gặp lại!\n");
                 break;
