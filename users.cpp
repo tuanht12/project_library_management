@@ -136,6 +136,7 @@ void print_user_info(int user_id, int with_header = 1) {
         printf("\n===== Thông tin người dùng =====\n");
     }
     printf("CMND: %d\n", USERIDS[index]);
+    printf("Mã số bạn đọc: %05d\n", internal_id);
     printf("Tên: %s\n", USERNAMES[index]);
     get_date_string(date_str, USER_CREATION_DATES[index][0],
                     USER_CREATION_DATES[index][1],
@@ -162,4 +163,89 @@ void print_all_users() {
             printf("-----------------------------\n");
         }
     }
+}
+
+int ask_to_edit_field() {
+    printf("Bạn muốn thay không? (y/n): ");
+    char choice;
+    scanf("%c", &choice);
+    cleanup_input_buffer();
+    return (choice == 'y' || choice == 'Y');
+}
+
+void edit_user_info(int user_id) {
+    int internal_id = get_user_internal_id(user_id);
+    if (internal_id == 0) {
+        printf("Người dùng với CMND %d không tồn tại.\n", user_id);
+        return;
+    }
+    int index = internal_id - 1;
+    int input_year, input_month, input_day;
+    char gender_input[10];
+    printf("Chỉnh sửa thông tin cho người dùng với CMND %d\n", user_id);
+    printf("Nhấn Enter để bỏ qua trường không muốn chỉnh sửa.\n");
+
+    printf("Tên hiện tại: %s\n", USERNAMES[index]);
+    if (ask_to_edit_field()) {
+        printf("Nhập tên mới: ");
+        safe_input_str(USERNAMES[index], sizeof(USERNAMES[index]));
+    }
+
+    printf("Ngày sinh hiện tại: ");
+    char date_str[11];
+    get_date_string(date_str, USER_BIRTHDATES[index][0],
+                    USER_BIRTHDATES[index][1], USER_BIRTHDATES[index][2]);
+    printf("%s\n", date_str);
+    if (ask_to_edit_field()) {
+        printf("Nhập ngày sinh mới\n");
+        input_date(input_year, input_month, input_day);
+        USER_BIRTHDATES[index][0] = input_year;
+        USER_BIRTHDATES[index][1] = input_month;
+        USER_BIRTHDATES[index][2] = input_day;
+    }
+
+    printf("Giới tính hiện tại: %s\n", USER_GENDERS[index] == 1 ? "Nam" : "Nữ");
+    if (ask_to_edit_field()) {
+        printf("Nhập giới tính mới (0: Nữ, 1: Nam): ");
+        safe_input_str(gender_input, sizeof(gender_input));
+        USER_GENDERS[index] = atoi(gender_input);
+    }
+
+    printf("Email hiện tại: %s\n", USER_EMAILS[index]);
+    if (ask_to_edit_field()) {
+        printf("Nhập email mới: ");
+        safe_input_str(USER_EMAILS[index], sizeof(USER_EMAILS[index]));
+    }
+
+    printf("Địa chỉ hiện tại: %s\n", USER_ADDRESSES[index]);
+    if (ask_to_edit_field()) {
+        printf("Nhập địa chỉ mới: ");
+        safe_input_str(USER_ADDRESSES[index], sizeof(USER_ADDRESSES[index]));
+    }
+
+    printf("Ngày tạo tài khoản hiện tại: ");
+    get_date_string(date_str, USER_CREATION_DATES[index][0],
+                    USER_CREATION_DATES[index][1],
+                    USER_CREATION_DATES[index][2]);
+    printf("%s\n", date_str);
+    if (ask_to_edit_field()) {
+        printf("Nhập ngày tạo tài khoản mới\n");
+        input_date(input_year, input_month, input_day);
+        USER_CREATION_DATES[index][0] = input_year;
+        USER_CREATION_DATES[index][1] = input_month;
+        USER_CREATION_DATES[index][2] = input_day;
+
+        // Automatically update expiration date when creation date changes
+        int exp_year, exp_month, exp_day;
+        get_expiration_date(input_year, input_month, input_day, exp_year,
+                            exp_month, exp_day);
+        USER_EXPIRATION_DATES[index][0] = exp_year;
+        USER_EXPIRATION_DATES[index][1] = exp_month;
+        USER_EXPIRATION_DATES[index][2] = exp_day;
+        printf("Ngày hết hạn tự động cập nhật thành: ");
+        get_date_string(date_str, exp_year, exp_month, exp_day);
+        printf("%s\n", date_str);
+    }
+
+    printf("Cập nhật thông tin thành công!\n");
 }
