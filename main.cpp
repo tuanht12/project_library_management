@@ -26,7 +26,7 @@ void run() {
         printf("9. Thoát\n");
         printf("Hãy chọn một tùy chọn: ");
         scanf("%d", &choice);
-        clear_input_buffer();
+        printf("Bạn đã chọn: %d\n", choice);
         switch (choice) {
             case 1:
                 int user_id;
