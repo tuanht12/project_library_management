@@ -9,6 +9,7 @@ extern int USER_CREATION_DATES[100][3];
 extern int USER_EXPIRATION_DATES[100][3];
 // Initialize users
 void initialize_user_data();
+void initialize_test_users();
 
 // Users related functions
 int is_existing_user(int user_id);

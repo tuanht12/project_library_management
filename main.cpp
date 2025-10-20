@@ -8,6 +8,7 @@
 void run() {
     // Initialize the global arrays
     initialize_user_data();
+    initialize_test_users();
     // Read user ID
     int user_id;
     printf("Hãy nhập CMND của bạn: ");
@@ -25,6 +26,7 @@ void run() {
         printf("2. Đăng ký người dùng mới\n");
         printf("3. Xem tất cả người dùng\n");
         printf("4. Chỉnh sửa thông tin người dùng\n");
+        printf("5. Xóa người dùng\n");
         printf("9. Thoát\n");
         printf("Hãy chọn một tùy chọn: ");
         scanf("%d", &choice);
@@ -54,6 +56,13 @@ void run() {
                 scanf("%d", &edit_user_id);
                 cleanup_input_buffer();
                 edit_user_info(edit_user_id);
+                break;
+            case 5:
+                int delete_user_id;
+                printf("Nhập CMND của người dùng cần xóa: ");
+                scanf("%d", &delete_user_id);
+                cleanup_input_buffer();
+                delete_user(delete_user_id);
                 break;
             case 9:
                 printf("Thoát khỏi hệ thống. Hẹn gặp lại!\n");

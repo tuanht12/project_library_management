@@ -57,6 +57,91 @@ void initialize_user_data() {
     }
 }
 
+/**
+ * @brief Khởi tạo 10 người dùng mẫu cho mục đích testing
+ *
+ * Hàm này tạo ra 10 người dùng với thông tin giả để dễ dàng test các tính năng
+ * của hệ thống quản lý thư viện mà không cần nhập thủ công.
+ */
+void initialize_test_users() {
+    // Sample user data arrays
+    int test_ids[10] = {123456, 234567, 345678, 456789, 567890,
+                        678901, 789012, 890123, 901234, 012345};
+
+    char test_names[10][100] = {
+        "Nguyen Van An", "Tran Thi Binh", "Le Van Cuong", "Pham Thi Dung",
+        "Hoang Van Em",  "Vu Thi Phuong", "Do Van Giang", "Bui Thi Hoa",
+        "Ngo Van Inh",   "Ly Thi Khanh"};
+
+    int test_genders[10] = {1, 0, 1, 0, 1,
+                            0, 1, 0, 1, 0};  // Alternating male/female
+
+    char test_emails[10][100] = {"an.nguyen@email.com", "binh.tran@email.com",
+                                 "cuong.le@email.com",  "dung.pham@email.com",
+                                 "em.hoang@email.com",  "phuong.vu@email.com",
+                                 "giang.do@email.com",  "hoa.bui@email.com",
+                                 "inh.ngo@email.com",   "khanh.ly@email.com"};
+
+    char test_addresses[10][100] = {"123 Nguyen Trai, Q1, TP.HCM",
+                                    "456 Le Loi, Q3, TP.HCM",
+                                    "789 Tran Hung Dao, Q5, TP.HCM",
+                                    "101 Vo Van Tan, Q3, TP.HCM",
+                                    "202 Cach Mang Thang 8, Q10, TP.HCM",
+                                    "303 Nguyen Dinh Chieu, Q3, TP.HCM",
+                                    "404 Pham Ngu Lao, Q1, TP.HCM",
+                                    "505 Hai Ba Trung, Q1, TP.HCM",
+                                    "606 Le Van Sy, Phu Nhuan, TP.HCM",
+                                    "707 Truong Chinh, Tan Binh, TP.HCM"};
+
+    // Birth dates (year, month, day)
+    int test_birthdates[10][3] = {{1990, 5, 15}, {1985, 8, 22}, {1992, 12, 3},
+                                  {1988, 3, 18}, {1995, 7, 9},  {1987, 11, 27},
+                                  {1993, 4, 14}, {1989, 9, 6},  {1991, 6, 30},
+                                  {1994, 10, 12}};
+
+    // Creation dates (all created in 2025)
+    int test_creation_dates[10][3] = {
+        {2025, 1, 15}, {2025, 2, 20}, {2025, 3, 10}, {2025, 4, 5},
+        {2025, 5, 18}, {2025, 6, 25}, {2025, 7, 8},  {2025, 8, 14},
+        {2025, 9, 22}, {2025, 10, 1}};
+
+    // Initialize each test user
+    for (int i = 0; i < 10; i++) {
+        USERIDS[i] = test_ids[i];
+        strcpy(USERNAMES[i], test_names[i]);
+        USER_GENDERS[i] = test_genders[i];
+        strcpy(USER_EMAILS[i], test_emails[i]);
+        strcpy(USER_ADDRESSES[i], test_addresses[i]);
+
+        // Set birthdate
+        USER_BIRTHDATES[i][0] = test_birthdates[i][0];
+        USER_BIRTHDATES[i][1] = test_birthdates[i][1];
+        USER_BIRTHDATES[i][2] = test_birthdates[i][2];
+
+        // Set creation date
+        USER_CREATION_DATES[i][0] = test_creation_dates[i][0];
+        USER_CREATION_DATES[i][1] = test_creation_dates[i][1];
+        USER_CREATION_DATES[i][2] = test_creation_dates[i][2];
+
+        // Calculate and set expiration date (48 months later)
+        int exp_year, exp_month, exp_day;
+        get_expiration_date(
+            test_creation_dates[i][0], test_creation_dates[i][1],
+            test_creation_dates[i][2], exp_year, exp_month, exp_day);
+        USER_EXPIRATION_DATES[i][0] = exp_year;
+        USER_EXPIRATION_DATES[i][1] = exp_month;
+        USER_EXPIRATION_DATES[i][2] = exp_day;
+    }
+
+    printf("Đã khởi tạo 10 người dùng mẫu cho testing!\n");
+    printf("CMND của các người dùng: ");
+    for (int i = 0; i < 10; i++) {
+        printf("%d", test_ids[i]);
+        if (i < 9) printf(", ");
+    }
+    printf("\n");
+}
+
 int get_user_internal_id(int user_id) {
     for (int i = 0; i < 100; i++) {
         if (USERIDS[i] == user_id) {
@@ -141,7 +226,7 @@ void print_user_info(int user_id, int with_header = 1) {
         printf("\n===== Thông tin người dùng =====\n");
     }
     printf("CMND: %d\n", USERIDS[index]);
-    printf("Mã số bạn đọc: %05d\n", internal_id);
+    printf("Mã số bạn đọc: %d\n", internal_id);
     printf("Tên: %s\n", USERNAMES[index]);
     get_date_string(date_str, USER_CREATION_DATES[index][0],
                     USER_CREATION_DATES[index][1],
