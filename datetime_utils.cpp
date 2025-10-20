@@ -45,7 +45,7 @@ int check_valid_date(int year, int month, int day) {
 void input_date(int& year, int& month, int& day) {
     printf("Nhập ngày (DD/MM/YYYY): ");
     scanf("%d/%d/%d", &day, &month, &year);
-    clear_input_buffer();
+    cleanup_input_buffer();
     int is_valid = 0;
     while (!is_valid) {
         if (check_valid_date(year, month, day)) {
@@ -53,7 +53,7 @@ void input_date(int& year, int& month, int& day) {
         } else {
             printf("Ngày không hợp lệ. Vui lòng nhập lại (DD/MM/YYYY): ");
             scanf("%d/%d/%d", &day, &month, &year);
-            clear_input_buffer();
+            cleanup_input_buffer();
         }
     }
 }

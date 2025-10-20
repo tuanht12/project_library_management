@@ -12,7 +12,7 @@ void run() {
     int user_id;
     printf("Hãy nhập CMND của bạn: ");
     scanf("%d", &user_id);
-    clear_input_buffer();  // Clear newline after scanf
+    cleanup_input_buffer();
     if (!is_existing_user(user_id) && !register_user(user_id)) {
         printf("Đăng ký người dùng thất bại. Vui lòng thử lại sau.\n");
         return;
@@ -26,21 +26,21 @@ void run() {
         printf("9. Thoát\n");
         printf("Hãy chọn một tùy chọn: ");
         scanf("%d", &choice);
-        clear_input_buffer();
+        cleanup_input_buffer();
         printf("Bạn đã chọn: %d\n", choice);
         switch (choice) {
             case 1:
                 int user_id;
                 printf("Nhập CMND của người dùng: ");
                 scanf("%d", &user_id);
-                clear_input_buffer();
+                cleanup_input_buffer();
                 print_user_info(user_id);
                 break;
             case 2: {
                 int new_user_id;
                 printf("Nhập CMND của người dùng mới: ");
                 scanf("%d", &new_user_id);
-                clear_input_buffer();
+                cleanup_input_buffer();
                 register_user(new_user_id);
             } break;
             case 9:
