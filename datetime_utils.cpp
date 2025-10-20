@@ -1,6 +1,21 @@
+#include "datetime_utils.h"
+
 #include <stdio.h>
 
 #include "utils.h"
+
+int CURRENT_YEAR;
+int CURRENT_MONTH;
+int CURRENT_DAY;
+
+void initialize_current_date() {
+    int year, month, day;
+    printf("Mời nhập ngày hiện tại của hệ thống.\n");
+    input_date(year, month, day);
+    CURRENT_YEAR = year;
+    CURRENT_MONTH = month;
+    CURRENT_DAY = day;
+}
 
 // 48 months expiration from creation date
 // Example: Creation Date: 2025-10-20 -> Expiration Date: 2029-10-20

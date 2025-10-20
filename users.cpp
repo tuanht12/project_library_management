@@ -192,14 +192,14 @@ int register_user(int user_id) {
     printf("Mời bạn nhập địa chỉ: ");
     safe_input_str(USER_ADDRESSES[user_index],
                    sizeof(USER_ADDRESSES[user_index]));
-    printf("Nhập ngày tạo tài khoản\n");
-    input_date(input_year, input_month, input_day);
-    USER_CREATION_DATES[user_index][0] = input_year;
-    USER_CREATION_DATES[user_index][1] = input_month;
-    USER_CREATION_DATES[user_index][2] = input_day;
+
+    // Set creation date & expiration date
+    USER_CREATION_DATES[user_index][0] = CURRENT_YEAR;
+    USER_CREATION_DATES[user_index][1] = CURRENT_MONTH;
+    USER_CREATION_DATES[user_index][2] = CURRENT_DAY;
     int exp_year, exp_month, exp_day;
-    get_expiration_date(input_year, input_month, input_day, exp_year, exp_month,
-                        exp_day);
+    get_expiration_date(CURRENT_YEAR, CURRENT_MONTH, CURRENT_DAY, exp_year,
+                        exp_month, exp_day);
     USER_EXPIRATION_DATES[user_index][0] = exp_year;
     USER_EXPIRATION_DATES[user_index][1] = exp_month;
     USER_EXPIRATION_DATES[user_index][2] = exp_day;
@@ -313,30 +313,6 @@ void edit_user_info(int user_id) {
         safe_input_str(USER_ADDRESSES[index], sizeof(USER_ADDRESSES[index]));
     }
 
-    printf("Ngày tạo tài khoản hiện tại: ");
-    get_date_string(date_str, USER_CREATION_DATES[index][0],
-                    USER_CREATION_DATES[index][1],
-                    USER_CREATION_DATES[index][2]);
-    printf("%s\n", date_str);
-    if (ask_to_edit_field()) {
-        printf("Nhập ngày tạo tài khoản mới\n");
-        input_date(input_year, input_month, input_day);
-        USER_CREATION_DATES[index][0] = input_year;
-        USER_CREATION_DATES[index][1] = input_month;
-        USER_CREATION_DATES[index][2] = input_day;
-
-        // Automatically update expiration date when creation date changes
-        int exp_year, exp_month, exp_day;
-        get_expiration_date(input_year, input_month, input_day, exp_year,
-                            exp_month, exp_day);
-        USER_EXPIRATION_DATES[index][0] = exp_year;
-        USER_EXPIRATION_DATES[index][1] = exp_month;
-        USER_EXPIRATION_DATES[index][2] = exp_day;
-        printf("Ngày hết hạn tự động cập nhật thành: ");
-        get_date_string(date_str, exp_year, exp_month, exp_day);
-        printf("%s\n", date_str);
-    }
-
     printf("Cập nhật thông tin thành công!\n");
 }
 
@@ -349,14 +325,4 @@ void delete_user(int user_id) {
     int index = internal_id - 1;
     initialize_one_user_data(index);
     printf("Xóa người dùng với CMND %d thành công.\n", user_id);
-}
-void login() {
-    int user_id;
-    printf("Hãy nhập CMND của bạn: ");
-    scanf("%d", &user_id);
-    cleanup_input_buffer();
-    if (!is_existing_user(user_id) && !register_user(user_id)) {
-        printf("Đăng ký người dùng thất bại. Vui lòng thử lại sau.\n");
-        return;
-    }
 }
