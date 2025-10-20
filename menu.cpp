@@ -58,7 +58,7 @@ void show_user_management_menu() {
     }
 }
 
-void show_main_menu() {
+void display_main_menu() {
     int choice = 0;
     while (choice != 9) {
         printf("\n=== MENU CHÍNH ===\n");
