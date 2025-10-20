@@ -33,22 +33,27 @@ int USER_EXPIRATION_DATES[100][3];
 int USER_BIRTHDATES[100][3];
 
 // Khởi tạo mảng người dùng
+
+void initialize_one_user_data(int index) {
+    USERIDS[index] = 0;
+    USERNAMES[index][0] = '\0';
+    USER_GENDERS[index] = -1;
+    USER_EMAILS[index][0] = '\0';
+    USER_ADDRESSES[index][0] = '\0';
+    USER_BIRTHDATES[index][0] = 0;
+    USER_BIRTHDATES[index][1] = 0;
+    USER_BIRTHDATES[index][2] = 0;
+    USER_CREATION_DATES[index][0] = 0;
+    USER_CREATION_DATES[index][1] = 0;
+    USER_CREATION_DATES[index][2] = 0;
+    USER_EXPIRATION_DATES[index][0] = 0;
+    USER_EXPIRATION_DATES[index][1] = 0;
+    USER_EXPIRATION_DATES[index][2] = 0;
+}
+
 void initialize_user_data() {
     for (int i = 0; i < 100; i++) {
-        USERIDS[i] = 0;
-        USERNAMES[i][0] = '\0';
-        USER_GENDERS[i] = -1;
-        USER_EMAILS[i][0] = '\0';
-        USER_ADDRESSES[i][0] = '\0';
-        USER_CREATION_DATES[i][0] = 0;
-        USER_CREATION_DATES[i][1] = 0;
-        USER_CREATION_DATES[i][2] = 0;
-        USER_EXPIRATION_DATES[i][0] = 0;
-        USER_EXPIRATION_DATES[i][1] = 0;
-        USER_EXPIRATION_DATES[i][2] = 0;
-        USER_BIRTHDATES[i][0] = 0;
-        USER_BIRTHDATES[i][1] = 0;
-        USER_BIRTHDATES[i][2] = 0;
+        initialize_one_user_data(i);
     }
 }
 
@@ -248,4 +253,15 @@ void edit_user_info(int user_id) {
     }
 
     printf("Cập nhật thông tin thành công!\n");
+}
+
+void delete_user(int user_id) {
+    int internal_id = get_user_internal_id(user_id);
+    if (internal_id == 0) {
+        printf("Người dùng với CMND %d không tồn tại.\n", user_id);
+        return;
+    }
+    int index = internal_id - 1;
+    initialize_one_user_data(index);
+    printf("Xóa người dùng với CMND %d thành công.\n", user_id);
 }
