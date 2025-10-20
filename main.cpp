@@ -25,8 +25,8 @@ void run() {
         printf("2. Đăng ký người dùng mới\n");
         printf("9. Thoát\n");
         printf("Hãy chọn một tùy chọn: ");
-        clear_input_buffer();
         scanf("%d", &choice);
+        clear_input_buffer();
         switch (choice) {
             case 1:
                 int user_id;

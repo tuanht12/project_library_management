@@ -60,5 +60,5 @@ void input_date(int& year, int& month, int& day) {
 
 // Get a date string based on year, month, day
 void get_date_string(char date_str[11], int year, int month, int day) {
-    snprintf(date_str, 11, "%04d-%02d-%02d", year, month, day);
+    snprintf(date_str, 11, "%02d/%02d/%04d", day, month, year);
 }
