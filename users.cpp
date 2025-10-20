@@ -350,3 +350,13 @@ void delete_user(int user_id) {
     initialize_one_user_data(index);
     printf("Xóa người dùng với CMND %d thành công.\n", user_id);
 }
+void login() {
+    int user_id;
+    printf("Hãy nhập CMND của bạn: ");
+    scanf("%d", &user_id);
+    cleanup_input_buffer();
+    if (!is_existing_user(user_id) && !register_user(user_id)) {
+        printf("Đăng ký người dùng thất bại. Vui lòng thử lại sau.\n");
+        return;
+    }
+}
