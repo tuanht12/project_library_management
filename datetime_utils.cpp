@@ -56,7 +56,6 @@ void input_date(int& year, int& month, int& day) {
             clear_input_buffer();
         }
     }
-    clear_input_buffer();
 }
 
 // Get a date string based on year, month, day

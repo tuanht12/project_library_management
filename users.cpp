@@ -70,7 +70,6 @@ int register_user(int user_id) {
         return 0;
     }
 
-    clear_input_buffer();
     int user_index = -1;
     int input_year, input_month, input_day;
     char gender_input[10];
@@ -132,7 +131,7 @@ void print_user_info(int user_id) {
     } else {
         strcpy(gender_str, "Nữ");
     }
-    printf("===== Thông tin người dùng =====\n");
+    printf("\n===== Thông tin người dùng =====\n");
     printf("CMND: %d\n", USERIDS[index]);
     printf("Tên: %s\n", USERNAMES[index]);
     get_date_string(date_str, USER_CREATION_DATES[index][0],
