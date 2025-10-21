@@ -272,44 +272,54 @@ long calculate_late_penalty(int borrow_year, int borrow_month, int borrow_day,
 long calculate_lost_penalty_by_isbn(int isbn) {
     return get_price_by_isbn(isbn) * 2;  // 200% penalty
 }
+void print_a_borrow_record(int card_id) {
+    int record_index = -1;
+    char date_str[11];
+    for (int i = 0; i < 1000; i++) {
+        if (BORROW_CARD_IDS[i] == card_id) {
+            record_index = i;
+            break;
+        }
+    }
+    if (record_index == -1) {
+        printf("Không tìm thấy bản ghi mượn với ID %d.\n", card_id);
+        return;
+    }
+    printf("Bản ghi mượn ID: %d\n", BORROW_CARD_IDS[record_index]);
+    printf("CMND người mượn: %d\n", BORROW_USER_IDS[record_index]);
+    get_date_string(date_str, BORROW_DATES[record_index][0],
+                    BORROW_DATES[record_index][1],
+                    BORROW_DATES[record_index][2]);
+    printf("Ngày mượn: %s\n", date_str);
+    get_date_string(date_str, EXPECTED_RETURN_DATES[record_index][0],
+                    EXPECTED_RETURN_DATES[record_index][1],
+                    EXPECTED_RETURN_DATES[record_index][2]);
+    printf("Ngày dự kiến trả: %s\n", date_str);
+    if (ACTUAL_RETURN_DATES[record_index][0] != 0) {
+        get_date_string(date_str, ACTUAL_RETURN_DATES[record_index][0],
+                        ACTUAL_RETURN_DATES[record_index][1],
+                        ACTUAL_RETURN_DATES[record_index][2]);
+        printf("Ngày trả thực tế: %s\n", date_str);
+    } else {
+        printf("Chưa trả sách.\n");
+    }
+    printf("Sách mượn:\n");
+    for (int j = 0; j < 10; j++) {
+        int isbn = BORROWED_ISBNS[record_index][j];
+        if (isbn == 0) {
+            break;
+        }
+        char book_name[100];
+        get_book_name_by_isbn(isbn, book_name);
+        printf(" - ISBN: %d - Tên sách: %s\n", isbn, book_name);
+    }
+}
 
 void print_unreturned_borrows() {
     printf("\n===== Danh sách bản ghi mượn chưa trả =====\n");
     for (int i = 0; i < 1000; i++) {
         if (BORROW_CARD_IDS[i] != 0 && ACTUAL_RETURN_DATES[i][0] == 0) {
             print_a_borrow_record(BORROW_CARD_IDS[i]);
-            printf("-----------------------------\n");
-        }
-    }
-}
-void print_finished_returns() {
-    printf("\n===== Danh sách bản ghi trả sách =====\n");
-    for (int i = 0; i < 1000; i++) {
-        if (BORROW_CARD_IDS[i] != 0 && ACTUAL_RETURN_DATES[i][0] != 0) {
-            printf("Bản ghi mượn ID: %d\n", BORROW_CARD_IDS[i]);
-            printf("CMND người mượn: %d\n", BORROW_USER_IDS[i]);
-            printf("Ngày mượn: %02d/%02d/%04d\n", BORROW_DATES[i][2],
-                   BORROW_DATES[i][1], BORROW_DATES[i][0]);
-            printf("Ngày dự kiến trả: %02d/%02d/%04d\n",
-                   EXPECTED_RETURN_DATES[i][2], EXPECTED_RETURN_DATES[i][1],
-                   EXPECTED_RETURN_DATES[i][0]);
-            printf("Ngày trả thực tế: %02d/%02d/%04d\n",
-                   ACTUAL_RETURN_DATES[i][2], ACTUAL_RETURN_DATES[i][1],
-                   ACTUAL_RETURN_DATES[i][0]);
-            printf("Sách mượn:\n");
-            for (int j = 0; j < 10; j++) {
-                int isbn = BORROWED_ISBNS[i][j];
-                if (isbn == 0) {
-                    break;
-                }
-                printf(" - ISBN: %d", isbn);
-                if (LOST_PENALTIES[i][j] > 0) {
-                    printf(" (Mất sách, Phí phạt: %ld VND)",
-                           LOST_PENALTIES[i][j]);
-                }
-                printf("\n");
-            }
-            printf("Phí phạt trễ hạn: %ld VND\n", LATE_PENALTIES[i]);
             printf("-----------------------------\n");
         }
     }
@@ -324,42 +334,44 @@ void print_all_borrow_records() {
     }
 }
 
-void print_a_borrow_record(int card_id) {
-    int record_index = -1;
+void print_finished_returns() {
+    printf("\n===== Danh sách bản ghi trả sách =====\n");
+    char date_str[11];
+
     for (int i = 0; i < 1000; i++) {
-        if (BORROW_CARD_IDS[i] == card_id) {
-            record_index = i;
-            break;
+        if (BORROW_CARD_IDS[i] != 0 && ACTUAL_RETURN_DATES[i][0] != 0) {
+            long total_penalty = 0;
+            printf("Bản ghi mượn ID: %d\n", BORROW_CARD_IDS[i]);
+            printf("CMND người mượn: %d\n", BORROW_USER_IDS[i]);
+            get_date_string(date_str, BORROW_DATES[i][0], BORROW_DATES[i][1],
+                            BORROW_DATES[i][2]);
+            printf("Ngày mượn: %s\n", date_str);
+            get_date_string(date_str, EXPECTED_RETURN_DATES[i][0],
+                            EXPECTED_RETURN_DATES[i][1],
+                            EXPECTED_RETURN_DATES[i][2]);
+            printf("Ngày dự kiến trả: %s\n", date_str);
+            get_date_string(date_str, ACTUAL_RETURN_DATES[i][0],
+                            ACTUAL_RETURN_DATES[i][1],
+                            ACTUAL_RETURN_DATES[i][2]);
+            printf("Ngày trả thực tế: %s\n", date_str);
+            printf("Sách mượn:\n");
+            for (int j = 0; j < 10; j++) {
+                int isbn = BORROWED_ISBNS[i][j];
+                if (isbn == 0) {
+                    break;
+                }
+                printf(" - ISBN: %d", isbn);
+                if (LOST_PENALTIES[i][j] > 0) {
+                    printf(" (Mất sách, Phí phạt: %ld VND)",
+                           LOST_PENALTIES[i][j]);
+                    total_penalty += LOST_PENALTIES[i][j];
+                }
+                printf("\n");
+            }
+            printf("Phí phạt trễ hạn: %ld VND\n", LATE_PENALTIES[i]);
+            printf("Tổng phí phạt: %ld VND\n",
+                   total_penalty + LATE_PENALTIES[i]);
+            printf("-----------------------------\n");
         }
-    }
-    if (record_index == -1) {
-        printf("Không tìm thấy bản ghi mượn với ID %d.\n", card_id);
-        return;
-    }
-    printf("Bản ghi mượn ID: %d\n", BORROW_CARD_IDS[record_index]);
-    printf("CMND người mượn: %d\n", BORROW_USER_IDS[record_index]);
-    printf("Ngày mượn: %02d/%02d/%04d\n", BORROW_DATES[record_index][2],
-           BORROW_DATES[record_index][1], BORROW_DATES[record_index][0]);
-    printf("Ngày dự kiến trả: %02d/%02d/%04d\n",
-           EXPECTED_RETURN_DATES[record_index][2],
-           EXPECTED_RETURN_DATES[record_index][1],
-           EXPECTED_RETURN_DATES[record_index][0]);
-    if (ACTUAL_RETURN_DATES[record_index][0] != 0) {
-        printf("Ngày trả thực tế: %02d/%02d/%04d\n",
-               ACTUAL_RETURN_DATES[record_index][2],
-               ACTUAL_RETURN_DATES[record_index][1],
-               ACTUAL_RETURN_DATES[record_index][0]);
-    } else {
-        printf("Chưa trả sách.\n");
-    }
-    printf("Sách mượn:\n");
-    for (int j = 0; j < 10; j++) {
-        int isbn = BORROWED_ISBNS[record_index][j];
-        if (isbn == 0) {
-            break;
-        }
-        char book_name[100];
-        get_book_name_by_isbn(isbn, book_name);
-        printf(" - ISBN: %d - Tên sách: %s\n", isbn, book_name);
     }
 }
