@@ -169,3 +169,34 @@ void add_book(int isbn, int num_copies) {
                    sizeof(BOOKSHELVES[new_book_index]));
     printf("Đã thêm sách mới với ISBN %d và số lượng %d\n", isbn, num_copies);
 }
+
+
+void delete_book(int isbn) {
+    for (int i = 0; i < 100; i++) {
+        if (ISBNS[i] == isbn) {
+            initialize_one_book_data(i);
+            printf("Đã xóa sách với ISBN %d khỏi hệ thống.\n", isbn);
+            return;
+        }
+    }
+    printf("Không tìm thấy sách với ISBN %d để xóa.\n", isbn);
+}
+
+void print_book_info(int isbn) {
+    for (int i = 0; i < 100; i++) {
+        if (ISBNS[i] == isbn) {
+            printf("\n--- Thông tin sách ---\n");
+            printf("ISBN: %d\n", ISBNS[i]);
+            printf("Tên sách: %s\n", BOOKNAMES[i]);
+            printf("Tác giả: %s\n", BOOKAUTHORS[i]);
+            printf("Nhà xuất bản: %s\n", BOOKPUBLISHERS[i]);
+            printf("Năm xuất bản: %d\n", BOOKYEARS[i]);
+            printf("Thể loại: %s\n", BOOKGENRES[i]);
+            printf("Giá sách: %s\n", BOOKSHELVES[i]);
+            printf("Số lượng hiện có: %d\n", BOOKCOUNTS[i]);
+            printf("----------------------\n");
+            return;
+        }
+    }
+    printf("Không tìm thấy sách với ISBN %d trong hệ thống.\n", isbn);
+}
