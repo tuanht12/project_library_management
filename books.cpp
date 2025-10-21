@@ -161,7 +161,6 @@ void add_book(int isbn, int num_copies) {
         safe_scanf_int(BOOKYEARS[new_book_index]);
     }
 
-
     printf("Nhập thể loại: ");
     safe_input_str(BOOKGENRES[new_book_index],
                    sizeof(BOOKGENRES[new_book_index]));
