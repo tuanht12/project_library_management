@@ -1,3 +1,4 @@
+#include "book_ops.h"
 #include "books.h"
 #include "datetime_utils.h"
 #include "menu.h"
@@ -11,6 +12,9 @@ int main() {
 
     initialize_book_data();
     initialize_test_books();
+
+    initialize_borrow_data();
+    initialize_test_borrows();
 
     display_main_menu();
     return 0;

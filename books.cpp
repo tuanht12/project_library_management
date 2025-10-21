@@ -275,3 +275,51 @@ void edit_book_info(int isbn) {
     }
     printf("Không tìm thấy sách với ISBN %d để chỉnh sửa.\n", isbn);
 }
+
+int borrow_book(int isbn) {
+    for (int i = 0; i < 100; i++) {
+        if (ISBNS[i] == isbn) {
+            if (BOOKCOUNTS[i] > 0) {
+                BOOKCOUNTS[i]--;
+                printf("Đã mượn sách với ISBN %d thành công.\n", isbn);
+                return 1;
+            } else {
+                printf("Sách với ISBN %d hiện không còn trong kho.\n", isbn);
+                return 0;
+            }
+        }
+    }
+    printf("Không tìm thấy sách với ISBN %d trong hệ thống.\n", isbn);
+    return 0;
+}
+
+int return_book(int isbn) {
+    for (int i = 0; i < 100; i++) {
+        if (ISBNS[i] == isbn) {
+            BOOKCOUNTS[i]++;
+            printf("Đã trả sách với ISBN %d thành công.\n", isbn);
+            return 1;
+        }
+    }
+    printf("Không tìm thấy sách với ISBN %d trong hệ thống.\n", isbn);
+    return 0;
+}
+
+int get_price_by_isbn(int isbn) {
+    for (int i = 0; i < 100; i++) {
+        if (ISBNS[i] == isbn) {
+            return BOOKPRICES[i];
+        }
+    }
+    return 0;
+}
+
+void get_book_name_by_isbn(int isbn, char book_name[100]) {
+    for (int i = 0; i < 100; i++) {
+        if (ISBNS[i] == isbn) {
+            strcpy(book_name, BOOKNAMES[i]);
+            return;
+        }
+    }
+    strcpy(book_name, "Unknown Book");
+}

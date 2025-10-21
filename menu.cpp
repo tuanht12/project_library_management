@@ -1,9 +1,9 @@
 #include <stdio.h>
 
+#include "book_ops.h"
 #include "books.h"
 #include "users.h"
 #include "utils.h"
-
 void show_user_management_menu() {
     int choice = 0;
     while (choice != 9) {
@@ -112,7 +112,43 @@ void show_book_management_menu() {
         }
     }
 }
-
+void show_borrow_return_menu() {
+    int choice = 0;
+    while (choice != 9) {
+        printf("=== QUẢN LÝ MƯỢN TRẢ SÁCH ===\n");
+        printf("1. Tạo phiếu mượn sách\n");
+        printf("2. Tạo phiếu trả sách\n");
+        printf("3. Xem danh sách tất cả phiếu mượn\n");
+        printf("4. Xem danh sách phiếu mượn chưa trả\n");
+        printf("5. Xem danh sách phiếu trả\n");
+        printf("9. Quay lại menu chính\n");
+        printf("Hãy chọn một tùy chọn: ");
+        safe_scanf_int(choice);
+        switch (choice) {
+            case 1:
+                create_borrow_card();
+                break;
+            case 2:
+                create_return_card();
+                break;
+            case 3:
+                print_all_borrow_records();
+                break;
+            case 4:
+                print_unreturned_borrows();
+                break;
+            case 5:
+                print_finished_returns();
+                break;
+            case 9:
+                printf("Quay lại menu chính.\n");
+                break;
+            default:
+                printf("Lựa chọn không hợp lệ. Vui lòng thử lại.\n");
+                break;
+        }
+    }
+}
 void display_main_menu() {
     int choice = 0;
     while (choice != 9) {
@@ -130,6 +166,9 @@ void display_main_menu() {
                 break;
             case 2:
                 show_book_management_menu();
+                break;
+            case 3:
+                show_borrow_return_menu();
                 break;
             case 9:
                 printf("Thoát chương trình. Tạm biệt!\n");
