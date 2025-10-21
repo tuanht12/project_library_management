@@ -1,8 +1,9 @@
+#include "books.h"
+
 #include <stdio.h>
 #include <string.h>
 
 #include "utils.h"
-
 int ISBNS[100];
 char BOOKNAMES[100][100];
 char BOOKAUTHORS[100][100];
@@ -103,14 +104,7 @@ void print_all_books() {
     printf("\n===== Danh sách tất cả sách =====\n");
     for (int i = 0; i < 100; i++) {
         if (ISBNS[i] != 0) {
-            printf("ISBN: %d\n", ISBNS[i]);
-            printf("Tên sách: %s\n", BOOKNAMES[i]);
-            printf("Tác giả: %s\n", BOOKAUTHORS[i]);
-            printf("Nhà xuất bản: %s\n", BOOKPUBLISHERS[i]);
-            printf("Năm xuất bản: %d\n", BOOKYEARS[i]);
-            printf("Thể loại: %s\n", BOOKGENRES[i]);
-            printf("Giá sách: %s\n", BOOKSHELVES[i]);
-            printf("Số lượng: %d\n", BOOKCOUNTS[i]);
+            print_book_info_by_isbn(ISBNS[i], 0);
             printf("-----------------------------\n");
         }
     }
@@ -170,7 +164,6 @@ void add_book(int isbn, int num_copies) {
     printf("Đã thêm sách mới với ISBN %d và số lượng %d\n", isbn, num_copies);
 }
 
-
 void delete_book(int isbn) {
     for (int i = 0; i < 100; i++) {
         if (ISBNS[i] == isbn) {
@@ -182,10 +175,12 @@ void delete_book(int isbn) {
     printf("Không tìm thấy sách với ISBN %d để xóa.\n", isbn);
 }
 
-void print_book_info(int isbn) {
+void print_book_info_by_isbn(int isbn, int with_header) {
     for (int i = 0; i < 100; i++) {
         if (ISBNS[i] == isbn) {
-            printf("\n--- Thông tin sách ---\n");
+            if (with_header) {
+                printf("\n--- Thông tin sách ---\n");
+            }
             printf("ISBN: %d\n", ISBNS[i]);
             printf("Tên sách: %s\n", BOOKNAMES[i]);
             printf("Tác giả: %s\n", BOOKAUTHORS[i]);
@@ -194,9 +189,82 @@ void print_book_info(int isbn) {
             printf("Thể loại: %s\n", BOOKGENRES[i]);
             printf("Giá sách: %s\n", BOOKSHELVES[i]);
             printf("Số lượng hiện có: %d\n", BOOKCOUNTS[i]);
-            printf("----------------------\n");
             return;
         }
     }
     printf("Không tìm thấy sách với ISBN %d trong hệ thống.\n", isbn);
+}
+
+void print_book_info_by_name(const char book_name[100]) {
+    for (int i = 0; i < 100; i++) {
+        if (strcmp(BOOKNAMES[i], book_name) == 0) {
+            int isbn = ISBNS[i];
+            print_book_info_by_isbn(isbn);
+            return;
+        }
+    }
+    printf("Không tìm thấy sách với tên \"%s\" trong hệ thống.\n", book_name);
+}
+
+void edit_book_info(int isbn) {
+    for (int i = 0; i < 100; i++) {
+        if (ISBNS[i] == isbn) {
+            printf("Chỉnh sửa thông tin cho sách với ISBN %d\n", isbn);
+            printf("Nhấn Enter để bỏ qua trường không muốn chỉnh sửa.\n");
+
+            printf("Tên sách hiện tại: %s\n", BOOKNAMES[i]);
+            if (ask_to_edit_field()) {
+                printf("Nhập tên sách mới: ");
+                safe_input_str(BOOKNAMES[i], sizeof(BOOKNAMES[i]));
+            }
+
+            printf("Tác giả hiện tại: %s\n", BOOKAUTHORS[i]);
+            if (ask_to_edit_field()) {
+                printf("Nhập tác giả mới: ");
+                safe_input_str(BOOKAUTHORS[i], sizeof(BOOKAUTHORS[i]));
+            }
+
+            printf("Nhà xuất bản hiện tại: %s\n", BOOKPUBLISHERS[i]);
+            if (ask_to_edit_field()) {
+                printf("Nhập nhà xuất bản mới: ");
+                safe_input_str(BOOKPUBLISHERS[i], sizeof(BOOKPUBLISHERS[i]));
+            }
+
+            printf("Năm xuất bản hiện tại: %d\n", BOOKYEARS[i]);
+            if (ask_to_edit_field()) {
+                printf("Nhập năm xuất bản mới: ");
+                safe_scanf_int(BOOKYEARS[i]);
+                while (BOOKYEARS[i] <= 0) {
+                    printf("Năm xuất bản không hợp lệ. Vui lòng nhập lại: ");
+                    safe_scanf_int(BOOKYEARS[i]);
+                }
+            }
+
+            printf("Thể loại hiện tại: %s\n", BOOKGENRES[i]);
+            if (ask_to_edit_field()) {
+                printf("Nhập thể loại mới: ");
+                safe_input_str(BOOKGENRES[i], sizeof(BOOKGENRES[i]));
+            }
+
+            printf("Giá sách hiện tại: %s\n", BOOKSHELVES[i]);
+            if (ask_to_edit_field()) {
+                printf("Nhập giá sách mới: ");
+                safe_input_str(BOOKSHELVES[i], sizeof(BOOKSHELVES[i]));
+            }
+
+            printf("Số lượng hiện tại: %d\n", BOOKCOUNTS[i]);
+            if (ask_to_edit_field()) {
+                printf("Nhập số lượng mới: ");
+                safe_scanf_int(BOOKCOUNTS[i]);
+                while (BOOKCOUNTS[i] < 0) {
+                    printf("Số lượng không hợp lệ. Vui lòng nhập lại: ");
+                    safe_scanf_int(BOOKCOUNTS[i]);
+                }
+            }
+
+            printf("Đã cập nhật thông tin cho sách với ISBN %d\n", isbn);
+            return;
+        }
+    }
+    printf("Không tìm thấy sách với ISBN %d để chỉnh sửa.\n", isbn);
 }
