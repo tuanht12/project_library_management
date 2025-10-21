@@ -154,10 +154,10 @@ int get_user_internal_id(int user_id) {
 int is_existing_user(int user_id) { return get_user_internal_id(user_id) != 0; }
 
 // Register a new user
-int register_user(int user_id) {
+void register_user(int user_id) {
     if (is_existing_user(user_id)) {
         printf("Người dùng với CMND %d đã tồn tại.\n", user_id);
-        return 0;
+        return;
     }
 
     int user_index = -1;
@@ -172,7 +172,7 @@ int register_user(int user_id) {
 
     if (user_index == -1) {
         printf("User registration failed: User limit reached.\n");
-        return 0;
+        return;
     }
     printf(
         "Người dùng mới! Vui lòng cung cấp thông tin để đăng ký tài khoản.\n");
@@ -204,7 +204,6 @@ int register_user(int user_id) {
     USER_EXPIRATION_DATES[user_index][1] = exp_month;
     USER_EXPIRATION_DATES[user_index][2] = exp_day;
     printf("Tạo tài khoản thành công!\n");
-    return 1;
 }
 
 // In thông tin người dùng
