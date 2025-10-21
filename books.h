@@ -4,7 +4,7 @@ extern char BOOKAUTHORS[100][100];
 extern char BOOKPUBLISHERS[100][100];
 extern int BOOKYEARS[100];
 extern char BOOKGENRES[100][100];
-extern char BOOKSHELVES[100][50];
+extern int BOOKPRICES[100];
 extern int BOOKCOUNTS[100];
 
 void initialize_book_data();
@@ -41,12 +41,12 @@ void delete_book(int isbn);
  * một thông báo rằng cuốn sách không tồn tại trong hệ thống.
  * @param isbn Mã ISBN của cuốn sách cần in thông tin.
  */
-void print_book_info_by_isbn(int isbn, int with_header=1);
+void print_book_info_by_isbn(int isbn, int with_header = 1);
 
 /**
  * @brief In thông tin chi tiết của một cuốn sách dựa trên tên sách.
- * Hàm này tìm kiếm cuốn sách trong mảng `BOOKNAMES` dựa trên tên sách được cung cấp.
- * Nếu tìm thấy, nó sẽ in ra tất cả thông tin liên quan đến cuốn sách đó,
+ * Hàm này tìm kiếm cuốn sách trong mảng `BOOKNAMES` dựa trên tên sách được cung
+ * cấp. Nếu tìm thấy, nó sẽ in ra tất cả thông tin liên quan đến cuốn sách đó,
  * bao gồm mã ISBN, tác giả, nhà xuất bản, năm xuất bản, thể loại,
  * giá sách và số lượng hiện có.
  * Nếu không tìm thấy cuốn sách với tên đã cho, hàm sẽ in ra
@@ -54,7 +54,6 @@ void print_book_info_by_isbn(int isbn, int with_header=1);
  * @param book_name Tên của cuốn sách cần in thông tin.
  */
 void print_book_info_by_name(const char book_name[100]);
-
 
 /**
  * @brief Chỉnh sửa thông tin của một cuốn sách dựa trên mã ISBN.
