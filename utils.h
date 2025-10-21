@@ -28,3 +28,27 @@ void cleanup_input_buffer();
  * // Người dùng nhập "John Doe" -> name = "John Doe" (không có '\n')
  */
 void safe_input_str(char buffer[100], int size);
+/**
+ * @brief Nhập một số nguyên an toàn từ người dùng
+ *
+ * Hàm này sử dụng scanf() để đọc một số nguyên từ stdin và sau đó
+ * gọi cleanup_input_buffer() để loại bỏ các ký tự thừa trong buffer đầu vào.
+ *
+ * @param value Con trỏ tới một biến kiểu int để lưu trữ kết quả nhập vào.
+ * Đây là một tham số đầu ra (output parameter).
+ *
+ * @note Hàm này sẽ lặp lại vô hạn cho đến khi người dùng nhập một số nguyên
+ * hợp lệ.
+ * @note An toàn để sử dụng ngay trước các hàm nhập chuỗi như safe_input_str()
+ * hoặc fgets() mà không cần gọi cleanup_input_buffer() thủ công.
+ *
+ * @warning Chữ ký hàm `void safe_scanf_int(int &value)` là của C++.
+ * Trong C, bạn phải sử dụng con trỏ: `void safe_scanf_int(int *value)`.
+ *
+ * @example
+ * int age;
+ * printf("Mời bạn nhập tuổi: ");
+ * safe_scanf_int(age);
+ * // Biến 'age' bây giờ chứa một giá trị số nguyên hợp lệ.
+ */
+void safe_scanf_int(int &value);
