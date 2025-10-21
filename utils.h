@@ -43,3 +43,10 @@ void safe_input_str(char buffer[100], int size);
  * // Biến 'age' bây giờ chứa một giá trị số nguyên hợp lệ.
  */
 void safe_scanf_int(int& value);
+
+/**
+ * @brief Hỏi người dùng có muốn chỉnh sửa trường thông tin hay không
+ * Hàm này sẽ yêu cầu người dùng nhập vào lựa chọn của mình và trả về
+ * 1 nếu người dùng muốn chỉnh sửa, 0 nếu không.
+ */
+int ask_to_edit_field();

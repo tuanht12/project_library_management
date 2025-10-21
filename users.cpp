@@ -254,14 +254,6 @@ void print_all_users() {
     }
 }
 
-int ask_to_edit_field() {
-    printf("Bạn muốn thay không? (y/n): ");
-    char choice;
-    scanf("%c", &choice);
-    cleanup_input_buffer();
-    return (choice == 'y' || choice == 'Y');
-}
-
 void edit_user_info(int user_id) {
     int internal_id = get_user_internal_id(user_id);
     if (internal_id == 0) {
