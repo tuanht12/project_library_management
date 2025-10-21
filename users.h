@@ -18,3 +18,4 @@ void print_user_info(int user_id, int with_header = 1);
 void print_all_users();
 void edit_user_info(int user_id);
 void delete_user(int user_id);
+int is_user_expired(int user_id);

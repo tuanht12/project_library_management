@@ -143,6 +143,9 @@ void initialize_test_users() {
 }
 
 int get_user_internal_id(int user_id) {
+    if (user_id == 0) {
+        return 0;
+    }
     for (int i = 0; i < 100; i++) {
         if (USERIDS[i] == user_id) {
             return i + 1;  // Return internal index
@@ -151,8 +154,35 @@ int get_user_internal_id(int user_id) {
     return 0;  // User not found
 }
 
-int is_existing_user(int user_id) { return get_user_internal_id(user_id) != 0; }
+int is_existing_user(int user_id) {
+    if (user_id == 0) {
+        return 0;
+    }
+    for (int i = 0; i < 100; i++) {
+        if (USERIDS[i] == user_id) {
+            return 1;  // User exists
+        }
+    }
+    return 0;  // User does not exist
+}
+int is_user_expired(int user_id) {
+    int internal_id = get_user_internal_id(user_id);
+    if (internal_id == 0) {
+        return -1;  // User does not exist
+    }
+    int index = internal_id - 1;
+    int exp_year = USER_EXPIRATION_DATES[index][0];
+    int exp_month = USER_EXPIRATION_DATES[index][1];
+    int exp_day = USER_EXPIRATION_DATES[index][2];
 
+    if (CURRENT_YEAR > exp_year ||
+        (CURRENT_YEAR == exp_year && CURRENT_MONTH > exp_month) ||
+        (CURRENT_YEAR == exp_year && CURRENT_MONTH == exp_month &&
+         CURRENT_DAY > exp_day)) {
+        return 1;  // Expired
+    }
+    return 0;  // Not expired
+}
 // Register a new user
 void register_user(int user_id) {
     if (is_existing_user(user_id)) {

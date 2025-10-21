@@ -9,12 +9,16 @@ int CURRENT_MONTH;
 int CURRENT_DAY;
 
 void initialize_current_date() {
-    int year, month, day;
-    printf("Mời nhập ngày hiện tại của hệ thống.\n");
-    input_date(year, month, day);
-    CURRENT_YEAR = year;
-    CURRENT_MONTH = month;
-    CURRENT_DAY = day;
+    // int year, month, day;
+    // printf("Mời nhập ngày hiện tại của hệ thống.\n");
+    // input_date(year, month, day);
+    // CURRENT_YEAR = year;
+    // CURRENT_MONTH = month;
+    // CURRENT_DAY = day;
+
+    CURRENT_DAY = 15;
+    CURRENT_MONTH = 6;
+    CURRENT_YEAR = 2024;
 }
 
 // 48 months expiration from creation date
@@ -76,4 +80,66 @@ void input_date(int& year, int& month, int& day) {
 // Get a date string based on year, month, day
 void get_date_string(char date_str[11], int year, int month, int day) {
     snprintf(date_str, 11, "%02d/%02d/%04d", day, month, year);
+}
+
+void get_expected_return_date(int borrow_year, int borrow_month, int borrow_day,
+                              int& return_year, int& return_month,
+                              int& return_day) {
+    // Add 7 days
+    return_day = borrow_day + 7;
+    return_month = borrow_month;
+    return_year = borrow_year;
+
+    // Days in each month
+    int days_in_month[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    // Check for leap year in February
+    if (borrow_month == 2) {
+        if (check_leap_year(borrow_year)) {
+            days_in_month[1] = 29;
+        }
+    }
+
+    // Adjust day and month/year if day exceeds month length
+    if (return_day > days_in_month[borrow_month - 1]) {
+        return_day -= days_in_month[borrow_month - 1];
+        return_month += 1;
+        if (return_month > 12) {
+            return_month = 1;
+            return_year += 1;
+        }
+    }
+}
+
+// TODO: TEST
+int calculate_days_between(int from_year, int from_month, int from_day,
+                              int to_year, int to_month, int to_day) {
+    if (from_year > to_year ||
+        (from_year == to_year && from_month > to_month) ||
+        (from_year == to_year && from_month == to_month && from_day > to_day)) {
+        printf("Invalid date range for difference calculation.\n");
+        return 0;
+    }
+    long total_days = 0;
+    int days_in_month[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    // Calculate days from from_date to to_date
+    // First, count full years
+    for (int year = from_year; year < to_year; year++) {
+        total_days += 365;
+        if (check_leap_year(year)) {
+            total_days += 1;
+        }
+    }
+    // Then, count days in the current year
+    for (int month = 1; month < from_month; month++) {
+        total_days -= days_in_month[month - 1];
+    }
+    total_days -= from_day;
+
+    for (int month = 1; month < to_month; month++) {
+        total_days += days_in_month[month - 1];
+    }
+    total_days += to_day;
+
+    return total_days;
 }
