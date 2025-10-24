@@ -1,24 +1,54 @@
 #include "datetime_utils.h"
 
 #include <stdio.h>
+#include <string.h>
+#include <time.h>
+
+#include <iostream>
 
 #include "utils.h"
-
 int CURRENT_YEAR;
 int CURRENT_MONTH;
 int CURRENT_DAY;
 
 void initialize_current_date() {
-    // int year, month, day;
-    // printf("Mời nhập ngày hiện tại của hệ thống.\n");
-    // input_date(year, month, day);
-    // CURRENT_YEAR = year;
-    // CURRENT_MONTH = month;
-    // CURRENT_DAY = day;
+    char time_str[26];
+    time_t current_time = time(NULL);
+    ctime_r(&current_time, time_str);
 
-    CURRENT_DAY = 15;
-    CURRENT_MONTH = 6;
-    CURRENT_YEAR = 2024;
+    char month_str[4];
+    const char* months[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+    month_str[0] = time_str[4];
+    month_str[1] = time_str[5];
+    month_str[2] = time_str[6];
+    month_str[3] = '\0';
+    int month = 0;
+    for (int i = 0; i < 12; i++) {
+        if (strcmp(month_str, months[i]) == 0) {
+            month = i + 1;
+            break;
+        }
+    }
+
+    int day = 0;
+    char day_str[3];
+    day_str[0] = time_str[8];
+    day_str[1] = time_str[9];
+    day_str[2] = '\0';
+    day = atoi(day_str);
+
+    char year_str[5];
+    year_str[0] = time_str[20];
+    year_str[1] = time_str[21];
+    year_str[2] = time_str[22];
+    year_str[3] = time_str[23];
+    year_str[4] = '\0';
+    int year = atoi(year_str);
+    printf("Current Date: %02d/%02d/%04d\n", day, month, year);
+    CURRENT_YEAR = year;
+    CURRENT_MONTH = month;
+    CURRENT_DAY = day;
 }
 
 // 48 months expiration from creation date
@@ -113,7 +143,7 @@ void get_expected_return_date(int borrow_year, int borrow_month, int borrow_day,
 
 // TODO: TEST
 int calculate_days_between(int from_year, int from_month, int from_day,
-                              int to_year, int to_month, int to_day) {
+                           int to_year, int to_month, int to_day) {
     if (from_year > to_year ||
         (from_year == to_year && from_month > to_month) ||
         (from_year == to_year && from_month == to_month && from_day > to_day)) {
