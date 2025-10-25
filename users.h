@@ -19,3 +19,4 @@ void print_all_users();
 void edit_user_info(int user_id);
 void delete_user(int user_id);
 int is_user_expired(int user_id);
+void get_user_name_by_id(int user_id, char username[100]);

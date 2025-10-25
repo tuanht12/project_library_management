@@ -141,7 +141,6 @@ void get_expected_return_date(int borrow_year, int borrow_month, int borrow_day,
     }
 }
 
-// TODO: TEST
 int calculate_days_between(int from_year, int from_month, int from_day,
                            int to_year, int to_month, int to_day) {
     if (from_year > to_year ||
@@ -152,15 +151,14 @@ int calculate_days_between(int from_year, int from_month, int from_day,
     }
     long total_days = 0;
     int days_in_month[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    // Calculate days from from_date to to_date
-    // First, count full years
+
     for (int year = from_year; year < to_year; year++) {
         total_days += 365;
         if (check_leap_year(year)) {
             total_days += 1;
         }
     }
-    // Then, count days in the current year
+
     for (int month = 1; month < from_month; month++) {
         total_days -= days_in_month[month - 1];
     }
