@@ -2,6 +2,7 @@
 
 #include "book_ops.h"
 #include "books.h"
+#include "stats.h"
 #include "users.h"
 #include "utils.h"
 void show_user_management_menu() {
@@ -149,6 +150,36 @@ void show_borrow_return_menu() {
         }
     }
 }
+void show_stats_menu() {
+    int choice = 0;
+    while (choice != 9) {
+        printf("\n=== THỐNG KÊ ===\n");
+        printf("1. In tổng số sách trong thư viện\n");
+        printf("2. In số lượng sách theo thể loại\n");
+        printf("3. In số lượng người dùng hiện tại\n");
+        printf("4. In số lượng người dùng theo giới tính\n");
+        printf("9. Quay lại menu chính\n");
+        printf("Hãy chọn một tùy chọn: ");
+        safe_scanf_int(choice);
+        switch (choice) {
+            case 1:
+                print_total_number_of_books();
+                break;
+            case 2:
+                print_number_books_by_genre();
+            case 3:
+                print_number_users();
+            case 4:
+                print_number_users_by_gender();
+            case 9:
+                printf("Quay lại menu chính.\n");
+                break;
+            default:
+                printf("Lựa chọn không hợp lệ. Vui lòng thử lại.\n");
+                break;
+        }
+    }
+}
 void display_main_menu() {
     int choice = 0;
     while (choice != 9) {
@@ -169,6 +200,9 @@ void display_main_menu() {
                 break;
             case 3:
                 show_borrow_return_menu();
+                break;
+            case 4:
+                show_stats_menu();
                 break;
             case 9:
                 printf("Thoát chương trình. Tạm biệt!\n");
