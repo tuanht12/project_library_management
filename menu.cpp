@@ -158,6 +158,8 @@ void show_stats_menu() {
         printf("2. In số lượng sách theo thể loại\n");
         printf("3. In số lượng người dùng hiện tại\n");
         printf("4. In số lượng người dùng theo giới tính\n");
+        printf("5. In số lượng sách đang được mượn nhưng chưa trả\n");
+        printf("6. Thống kê danh sách độc giả bị trễ hạn\n");
         printf("9. Quay lại menu chính\n");
         printf("Hãy chọn một tùy chọn: ");
         safe_scanf_int(choice);
@@ -167,10 +169,19 @@ void show_stats_menu() {
                 break;
             case 2:
                 print_number_books_by_genre();
+                break;
             case 3:
                 print_number_users();
+                break;
             case 4:
                 print_number_users_by_gender();
+                break;
+            case 5:
+                print_number_unreturned_books();
+                break;
+            case 6:
+                print_current_late_users();
+                break;
             case 9:
                 printf("Quay lại menu chính.\n");
                 break;

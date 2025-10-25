@@ -347,3 +347,12 @@ void delete_user(int user_id) {
     initialize_one_user_data(index);
     printf("Xóa người dùng với CMND %d thành công.\n", user_id);
 }
+void get_user_name_by_id(int user_id, char username[100]) {
+    int internal_id = get_user_internal_id(user_id);
+    if (internal_id == 0) {
+        printf("Người dùng với CMND %d không tồn tại.\n", user_id);
+        return;
+    }
+
+    strcpy(username, USERNAMES[internal_id - 1]);
+}

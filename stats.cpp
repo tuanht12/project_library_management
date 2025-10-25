@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "book_ops.h"
 #include "books.h"
+#include "datetime_utils.h"
 #include "users.h"
 void print_total_number_of_books() {
     int total_books = 0;
@@ -60,4 +62,59 @@ void print_number_users_by_gender() {
     }
     printf("Số lượng người dùng NAM hiện tại là: %d người.\n", num_male);
     printf("Số lượng người dùng NỮ hiện tại là: %d người.\n", num_female);
+}
+
+void print_number_unreturned_books() {
+    int num_unreturned_books = 0;
+    for (int i = 0; i < 1000; i++) {
+        if (BORROW_CARD_IDS[i] != 0 && ACTUAL_RETURN_DATES[i][0] == 0) {
+            for (int j = 0; j < 10; j++) {
+                if (BORROWED_ISBNS[i][j] > 0) num_unreturned_books++;
+            }
+        }
+    }
+    printf("Số sách đang được mượn nhưng chưa trả là: %d cuốn.",
+           num_unreturned_books);
+}
+
+void print_late_return_user(int user_id) {
+    int num_late_days = 0;
+    int max_late_borrow_card_id = 0;
+    for (int i = 0; i < 1000; i++) {
+        if (BORROW_USER_IDS[i] != user_id) continue;
+        int days_between = calculate_days_between(
+            BORROW_DATES[i][0], BORROW_DATES[i][1], BORROW_DATES[i][2],
+            CURRENT_YEAR, CURRENT_MONTH, CURRENT_DAY);
+        if (days_between > 7 and days_between - 7 > num_late_days) {
+            num_late_days = days_between - 7;
+            max_late_borrow_card_id = BORROW_CARD_IDS[i];
+        }
+    }
+
+    if (num_late_days > 0) {
+        char username[100];
+        get_user_name_by_id(user_id, username);
+        printf(
+            "Người dùng %s - CMND %d quá hạn %d ngày cho phiếu mượn sách ID "
+            "%d.\n",
+            username, user_id, num_late_days, max_late_borrow_card_id);
+    }
+}
+
+void print_current_late_users() {
+    printf("Danh sách người dùng đang mượn sách quá hạn:\n");
+    for (int i = 0; i < 1000; i++) {
+        if (BORROW_CARD_IDS[i] != 0 && ACTUAL_RETURN_DATES[i][0] == 0) {
+            int found = 0;
+            int current_uid = BORROW_USER_IDS[i];
+            for (int j = 0; j < i; j++) {
+                if (BORROW_USER_IDS[j] == current_uid) {
+                    found = 1;
+                    break;
+                }
+            }
+            if (found) continue;
+            print_late_return_user(current_uid);
+        }
+    }
 }
