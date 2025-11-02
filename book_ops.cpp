@@ -2,20 +2,20 @@
 
 #include <stdio.h>
 
-#include "book_ops.h"
 #include "books.h"
+#include "configs.h"
 #include "datetime_utils.h"
 #include "users.h"
 #include "utils.h"
 
-int BORROW_CARD_IDS[1000];
-int BORROW_USER_IDS[1000];
-int BORROW_DATES[1000][3];
-int EXPECTED_RETURN_DATES[1000][3];
-int ACTUAL_RETURN_DATES[1000][3];
-int BORROWED_ISBNS[1000][10];
-long LATE_PENALTIES[1000];
-long LOST_PENALTIES[1000][10];
+int BORROW_CARD_IDS[MAX_BORROW_RECORDS];
+int BORROW_USER_IDS[MAX_BORROW_RECORDS];
+int BORROW_DATES[MAX_BORROW_RECORDS][3];
+int EXPECTED_RETURN_DATES[MAX_BORROW_RECORDS][3];
+int ACTUAL_RETURN_DATES[MAX_BORROW_RECORDS][3];
+int BORROWED_ISBNS[MAX_BORROW_RECORDS][MAX_BORROWED_BOOKS];
+long LATE_PENALTIES[MAX_BORROW_RECORDS];
+long LOST_PENALTIES[MAX_BORROW_RECORDS][MAX_BORROWED_BOOKS];
 
 void initialize_one_borrow_card(int index) {
     BORROW_CARD_IDS[index] = 0;
@@ -30,14 +30,14 @@ void initialize_one_borrow_card(int index) {
     ACTUAL_RETURN_DATES[index][1] = 0;
     ACTUAL_RETURN_DATES[index][2] = 0;
     LATE_PENALTIES[index] = 0;
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < MAX_BORROWED_BOOKS; i++) {
         BORROWED_ISBNS[index][i] = 0;
         LOST_PENALTIES[index][i] = 0;
     }
 }
 
 void initialize_borrow_data() {
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < MAX_BORROW_RECORDS; i++) {
         initialize_one_borrow_card(i);
     }
 }
@@ -87,7 +87,7 @@ void initialize_test_borrows() {
         ACTUAL_RETURN_DATES[i][0] = test_actual_return_dates[i][0];
         ACTUAL_RETURN_DATES[i][1] = test_actual_return_dates[i][1];
         ACTUAL_RETURN_DATES[i][2] = test_actual_return_dates[i][2];
-        for (int j = 0; j < 10; j++) {
+        for (int j = 0; j < MAX_BORROWED_BOOKS; j++) {
             BORROWED_ISBNS[i][j] = test_borrowed_isbns[i][j];
         }
     }
@@ -106,7 +106,7 @@ void initialize_test_borrows() {
         }
 
         // Calculate lost book penalties
-        for (int j = 0; j < 10; j++) {
+        for (int j = 0; j < MAX_BORROWED_BOOKS; j++) {
             if (test_lost_flags[i][j] == 1) {
                 int isbn = BORROWED_ISBNS[i][j];
                 if (isbn == 0) {
@@ -118,9 +118,10 @@ void initialize_test_borrows() {
     }
     printf("Đã khởi tạo 5 bản ghi mượn sách mẫu cho testing!\n");
 }
+
 void create_borrow_card() {
     int record_index = -1;
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < MAX_BORROW_RECORDS; i++) {
         if (BORROW_CARD_IDS[i] == 0) {
             record_index = i;
             BORROW_CARD_IDS[i] = i + 1;  // Assign a new record ID
@@ -165,7 +166,7 @@ void create_borrow_card() {
 
     printf("Nhập ISBN các sách mượn (nhập 0 để kết thúc):\n");
     int book_count = 0;
-    while (book_count < 10) {
+    while (book_count < MAX_BORROWED_BOOKS) {
         int isbn;
         printf("ISBN sách thứ %d: ", book_count + 1);
         safe_scanf_int(isbn);
@@ -190,11 +191,11 @@ void create_borrow_card() {
 }
 
 void create_return_card() {
-    printf("Nhập ID bản ghi mượn để trả sách: ");
+    printf("Nhập ID phiếu mượn để trả sách: ");
     int card_id;
     safe_scanf_int(card_id);
     int record_index = -1;
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < MAX_BORROW_RECORDS; i++) {
         if (BORROW_CARD_IDS[i] == card_id) {
             record_index = i;
             break;
@@ -210,7 +211,7 @@ void create_return_card() {
         return;
     }
 
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < MAX_BORROWED_BOOKS; i++) {
         int isbn = BORROWED_ISBNS[record_index][i];
         if (isbn == 0) {
             break;
@@ -262,20 +263,20 @@ long calculate_late_penalty(int borrow_year, int borrow_month, int borrow_day,
     int days_between =
         calculate_days_between(borrow_year, borrow_month, borrow_day,
                                return_year, return_month, return_day);
-    if (days_between > 7) {
-        return (days_between - 7) * 5000;  // 5000 VND per late day
+    if (days_between > MAX_BORROW_DAYS) {
+        return (days_between - MAX_BORROW_DAYS) * LATE_FINE_PER_DAY;
     } else {
         return 0;
     }
 }
 
 long calculate_lost_penalty_by_isbn(int isbn) {
-    return get_price_by_isbn(isbn) * 2;  // 200% penalty
+    return get_price_by_isbn(isbn) * LOST_PENALTY_FACTOR;
 }
 void print_a_borrow_record(int card_id) {
     int record_index = -1;
     char date_str[11];
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < MAX_BORROW_RECORDS; i++) {
         if (BORROW_CARD_IDS[i] == card_id) {
             record_index = i;
             break;
@@ -304,12 +305,12 @@ void print_a_borrow_record(int card_id) {
         printf("Chưa trả sách.\n");
     }
     printf("Sách mượn:\n");
-    for (int j = 0; j < 10; j++) {
+    for (int j = 0; j < MAX_BORROWED_BOOKS; j++) {
         int isbn = BORROWED_ISBNS[record_index][j];
         if (isbn == 0) {
             break;
         }
-        char book_name[100];
+        char book_name[MAX_STR_LEN];
         get_book_name_by_isbn(isbn, book_name);
         printf(" - ISBN: %d - Tên sách: %s\n", isbn, book_name);
     }
@@ -317,7 +318,7 @@ void print_a_borrow_record(int card_id) {
 
 void print_unreturned_borrows() {
     printf("\n===== Danh sách bản ghi mượn chưa trả =====\n");
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < MAX_BORROW_RECORDS; i++) {
         if (BORROW_CARD_IDS[i] != 0 && ACTUAL_RETURN_DATES[i][0] == 0) {
             print_a_borrow_record(BORROW_CARD_IDS[i]);
             printf("-----------------------------\n");
@@ -326,7 +327,7 @@ void print_unreturned_borrows() {
 }
 void print_all_borrow_records() {
     printf("\n===== Danh sách tất cả bản ghi mượn sách =====\n");
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < MAX_BORROW_RECORDS; i++) {
         if (BORROW_CARD_IDS[i] != 0) {
             print_a_borrow_record(BORROW_CARD_IDS[i]);
             printf("-----------------------------\n");
@@ -338,7 +339,7 @@ void print_finished_returns() {
     printf("\n===== Danh sách bản ghi trả sách =====\n");
     char date_str[11];
 
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < MAX_BORROW_RECORDS; i++) {
         if (BORROW_CARD_IDS[i] != 0 && ACTUAL_RETURN_DATES[i][0] != 0) {
             long total_penalty = 0;
             printf("Bản ghi mượn ID: %d\n", BORROW_CARD_IDS[i]);
@@ -355,7 +356,7 @@ void print_finished_returns() {
                             ACTUAL_RETURN_DATES[i][2]);
             printf("Ngày trả thực tế: %s\n", date_str);
             printf("Sách mượn:\n");
-            for (int j = 0; j < 10; j++) {
+            for (int j = 0; j < MAX_BORROWED_BOOKS; j++) {
                 int isbn = BORROWED_ISBNS[i][j];
                 if (isbn == 0) {
                     break;
