@@ -2,53 +2,66 @@
 
 /**
  * @brief Mảng chứa CMND của tất cả người dùng trong hệ thống
- * @details Giá trị 0 biểu thị slot trống, các giá trị khác là CMND hợp lệ
+ *
+ * Giá trị 0 biểu thị slot trống, các giá trị khác là CMND hợp lệ
+ *
  * @note Index của mảng này tương ứng với index của các mảng người dùng khác
  */
 extern int USERIDS[MAX_USERS];
 
 /**
  * @brief Mảng chứa tên đầy đủ của người dùng
- * @details Chuỗi rỗng ("") biểu thị slot trống
+ *
+ * Chuỗi rỗng ("") biểu thị slot trống
+ *
  * @note Độ dài tối đa mỗi tên là MAX_STR_LEN ký tự
  */
 extern char USERNAMES[MAX_USERS][MAX_STR_LEN];
 
 /**
  * @brief Mảng chứa giới tính của người dùng
- * @details 0: Nữ, 1: Nam, -1: Slot trống
+ *
+ * 0: Nữ, 1: Nam, -1: Slot trống
  */
 extern int USER_GENDERS[MAX_USERS];
 
 /**
  * @brief Mảng chứa địa chỉ email của người dùng
- * @details Chuỗi rỗng ("") biểu thị slot trống hoặc không có email
+ *
+ * Chuỗi rỗng ("") biểu thị slot trống hoặc không có email
  */
 extern char USER_EMAILS[MAX_USERS][MAX_STR_LEN];
 
 /**
  * @brief Mảng chứa địa chỉ thường trú của người dùng
- * @details Chuỗi rỗng ("") biểu thị slot trống hoặc không có địa chỉ
+ *
+ * Chuỗi rỗng ("") biểu thị slot trống hoặc không có địa chỉ
  */
 extern char USER_ADDRESSES[MAX_USERS][MAX_STR_LEN];
 
 /**
  * @brief Mảng chứa ngày sinh của người dùng
- * @details Định dạng: [năm, tháng, ngày]. VD: [1990, 5, 15] = 15/5/1990
+ *
+ * Định dạng: [năm, tháng, ngày]. VD: [1990, 5, 15] = 15/5/1990
+ *
  * @note [0, 0, 0] biểu thị slot trống hoặc ngày sinh chưa được thiết lập
  */
 extern int USER_BIRTHDATES[MAX_USERS][3];
 
 /**
  * @brief Mảng chứa ngày tạo tài khoản của người dùng
- * @details Định dạng: [năm, tháng, ngày]. Tự động thiết lập khi đăng ký
+ *
+ * Định dạng: [năm, tháng, ngày]. Tự động thiết lập khi đăng ký
+ *
  * @note [0, 0, 0] biểu thị slot trống
  */
 extern int USER_CREATION_DATES[MAX_USERS][3];
 
 /**
  * @brief Mảng chứa ngày hết hạn tài khoản của người dùng
- * @details Định dạng: [năm, tháng, ngày]. Tài khoản hết hạn không thể mượn sách
+ *
+ * Định dạng: [năm, tháng, ngày]. Tài khoản hết hạn không thể mượn sách
+ *
  * @note [0, 0, 0] biểu thị tài khoản không có hạn sử dụng
  */
 extern int USER_EXPIRATION_DATES[MAX_USERS][3];
@@ -66,7 +79,8 @@ void initialize_user_data();
 
 /**
  * @brief Tạo dữ liệu người dùng mẫu để test hệ thống
- * @details Tạo một số tài khoản người dùng giả với thông tin đầy đủ
+ *
+ * Tạo một số tài khoản người dùng giả với thông tin đầy đủ
  */
 void initialize_test_users();
 
@@ -108,7 +122,8 @@ void print_user_info(int user_id, int with_header = 1);
 
 /**
  * @brief In danh sách tất cả người dùng trong hệ thống
- * @details In thông tin cơ bản của tất cả người dùng đã đăng ký
+ *
+ * In thông tin cơ bản của tất cả người dùng đã đăng ký
  */
 void print_all_users();
 
@@ -121,17 +136,22 @@ void edit_user_info(int user_id);
 
 /**
  * @brief Xóa người dùng khỏi hệ thống
+ *
+ * Thiết lập lại tất cả thông tin về trạng thái rỗng
+ *
  * @param user_id CMND của người dùng cần xóa
- * @details Thiết lập lại tất cả thông tin về trạng thái rỗng
+ *
  * @warning Không thể khôi phục sau khi xóa
  */
 void delete_user(int user_id);
 
 /**
  * @brief Lấy tên người dùng theo CMND
+ *
+ * Sao chép tên người dùng vào buffer username
+ *
  * @param user_id CMND của người dùng
  * @param username Buffer để lưu tên người dùng
- * @details Sao chép tên người dùng vào buffer username
  * @note Nếu người dùng không tồn tại, username sẽ là chuỗi rỗng
  */
 void get_user_name_by_id(int user_id, char username[MAX_STR_LEN]);
