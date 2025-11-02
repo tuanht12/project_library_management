@@ -10,6 +10,7 @@
  * trình
  */
 void cleanup_input_buffer();
+
 /**
  * @brief Nhập chuỗi ký tự an toàn từ người dùng
  *
@@ -21,20 +22,16 @@ void cleanup_input_buffer();
  *
  * @note Hàm này an toàn hơn gets() vì tránh được buffer overflow
  * @note Ký tự '\n' sẽ được tự động loại bỏ khỏi chuỗi kết quả
- *
- * @example
- * char name[100];
- * input_str(name, sizeof(name));
- * // Người dùng nhập "John Doe" -> name = "John Doe" (không có '\n')
  */
 void safe_input_str(char buffer[100], int size);
+
 /**
  * @brief Nhập một số nguyên an toàn từ người dùng
  *
  * Hàm này sử dụng scanf() để đọc một số nguyên từ stdin và sau đó
  * gọi cleanup_input_buffer() để loại bỏ các ký tự thừa trong buffer đầu vào.
  *
- * @param value Biến tham chiếu để lưu trữ số nguyên nhập vào
+ * @param var Biến tham chiếu để lưu trữ số nguyên nhập vào
  *
  * @example
  * int age;
@@ -42,11 +39,13 @@ void safe_input_str(char buffer[100], int size);
  * safe_scanf_int(age);
  * // Biến 'age' bây giờ chứa một giá trị số nguyên hợp lệ.
  */
-void safe_scanf_int(int& value);
+void safe_scanf_int(int& var);
 
 /**
  * @brief Hỏi người dùng có muốn chỉnh sửa trường thông tin hay không
- * Hàm này sẽ yêu cầu người dùng nhập vào lựa chọn của mình và trả về
- * 1 nếu người dùng muốn chỉnh sửa, 0 nếu không.
+ *
+ * Hàm này sẽ yêu cầu người dùng nhập vào "y" để xác nhận, Enter để bỏ qua.
+ *
+ * @return 1 nếu người dùng muốn chỉnh sửa, 0 nếu không muốn
  */
 int ask_to_edit_field();
