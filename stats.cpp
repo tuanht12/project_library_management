@@ -1,22 +1,25 @@
+#include "stats.h"
+
 #include <stdio.h>
 #include <string.h>
 
 #include "book_ops.h"
 #include "books.h"
+#include "configs.h"
 #include "datetime_utils.h"
 #include "users.h"
 void print_total_number_of_books() {
     int total_books = 0;
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < MAX_BOOKS; i++) {
         total_books += BOOKCOUNTS[i];
     }
     printf("Tổng số  cuốn sách trong thư viện: %d cuốn.\n", total_books);
 }
 
 void print_number_books_by_genre() {
-    char current_genre[100];
+    char current_genre[MAX_STR_LEN];
 
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < MAX_BOOKS; i++) {
         if (BOOKCOUNTS[i] == 0) {
             continue;
         }
@@ -43,7 +46,7 @@ void print_number_books_by_genre() {
 
 void print_number_users() {
     int user_counts = 0;
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < MAX_USERS; i++) {
         if (USERIDS[i] > 0) user_counts++;
     }
     printf("Số lượng người dùng hiện tại là: %d người.", user_counts);
@@ -52,7 +55,7 @@ void print_number_users() {
 void print_number_users_by_gender() {
     int num_male = 0;
     int num_female = 0;
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < MAX_USERS; i++) {
         if (USERIDS[i] <= 0) continue;
         if (USER_GENDERS[i] == 0) {
             num_female++;
@@ -66,7 +69,7 @@ void print_number_users_by_gender() {
 
 void print_number_unreturned_books() {
     int num_unreturned_books = 0;
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < MAX_BORROW_RECORDS; i++) {
         if (BORROW_CARD_IDS[i] != 0 && ACTUAL_RETURN_DATES[i][0] == 0) {
             for (int j = 0; j < 10; j++) {
                 if (BORROWED_ISBNS[i][j] > 0) num_unreturned_books++;
@@ -80,7 +83,7 @@ void print_number_unreturned_books() {
 void print_late_return_user(int user_id) {
     int num_late_days = 0;
     int max_late_borrow_card_id = 0;
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < MAX_BORROW_RECORDS; i++) {
         if (BORROW_USER_IDS[i] != user_id) continue;
         int days_between = calculate_days_between(
             BORROW_DATES[i][0], BORROW_DATES[i][1], BORROW_DATES[i][2],
@@ -103,7 +106,7 @@ void print_late_return_user(int user_id) {
 
 void print_current_late_users() {
     printf("Danh sách người dùng đang mượn sách quá hạn:\n");
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < MAX_BORROW_RECORDS; i++) {
         if (BORROW_CARD_IDS[i] != 0 && ACTUAL_RETURN_DATES[i][0] == 0) {
             int found = 0;
             int current_uid = BORROW_USER_IDS[i];

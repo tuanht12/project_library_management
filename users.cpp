@@ -1,38 +1,22 @@
+#include "users.h"
+
 #include <stdio.h>
 #include <string.h>
 
 #include <iostream>
 
+#include "configs.h"
 #include "datetime_utils.h"
 #include "utils.h"
 
-// Define the global arrays
-
-// CMND của người dùng
-int USERIDS[100];
-
-// Tên người dùng
-char USERNAMES[100][100];
-
-// Giới tính của người dùng, 0: Nữ, 1: Nam
-int USER_GENDERS[100];
-
-// Email của người dùng
-char USER_EMAILS[100][100];
-
-// Địa chỉ của người dùng
-char USER_ADDRESSES[100][100];
-
-// Ngày tạo tài khoản của người dùng
-int USER_CREATION_DATES[100][3];
-
-// Ngày hết hạn tài khoản của người dùng
-int USER_EXPIRATION_DATES[100][3];
-
-// Ngày sinh của người dùng
-int USER_BIRTHDATES[100][3];
-
-// Khởi tạo mảng người dùng
+int USERIDS[MAX_USERS];
+char USERNAMES[MAX_USERS][MAX_STR_LEN];
+int USER_GENDERS[MAX_USERS];
+char USER_EMAILS[MAX_USERS][MAX_STR_LEN];
+char USER_ADDRESSES[MAX_USERS][MAX_STR_LEN];
+int USER_CREATION_DATES[MAX_USERS][3];
+int USER_EXPIRATION_DATES[MAX_USERS][3];
+int USER_BIRTHDATES[MAX_USERS][3];
 
 void initialize_one_user_data(int index) {
     USERIDS[index] = 0;
@@ -52,23 +36,17 @@ void initialize_one_user_data(int index) {
 }
 
 void initialize_user_data() {
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < MAX_USERS; i++) {
         initialize_one_user_data(i);
     }
 }
 
-/**
- * @brief Khởi tạo 10 người dùng mẫu cho mục đích testing
- *
- * Hàm này tạo ra 10 người dùng với thông tin giả để dễ dàng test các tính năng
- * của hệ thống quản lý thư viện mà không cần nhập thủ công.
- */
 void initialize_test_users() {
     // Sample user data arrays
     int test_ids[10] = {123456, 234567, 345678, 456789, 567890,
                         678901, 789012, 890123, 901234, 012345};
 
-    char test_names[10][100] = {
+    char test_names[10][MAX_STR_LEN] = {
         "Nguyen Van An", "Tran Thi Binh", "Le Van Cuong", "Pham Thi Dung",
         "Hoang Van Em",  "Vu Thi Phuong", "Do Van Giang", "Bui Thi Hoa",
         "Ngo Van Inh",   "Ly Thi Khanh"};
@@ -76,22 +54,23 @@ void initialize_test_users() {
     int test_genders[10] = {1, 0, 1, 0, 1,
                             0, 1, 0, 1, 0};  // Alternating male/female
 
-    char test_emails[10][100] = {"an.nguyen@email.com", "binh.tran@email.com",
-                                 "cuong.le@email.com",  "dung.pham@email.com",
-                                 "em.hoang@email.com",  "phuong.vu@email.com",
-                                 "giang.do@email.com",  "hoa.bui@email.com",
-                                 "inh.ngo@email.com",   "khanh.ly@email.com"};
+    char test_emails[10][MAX_STR_LEN] = {
+        "an.nguyen@email.com", "binh.tran@email.com", "cuong.le@email.com",
+        "dung.pham@email.com", "em.hoang@email.com",  "phuong.vu@email.com",
+        "giang.do@email.com",  "hoa.bui@email.com",   "inh.ngo@email.com",
+        "khanh.ly@email.com"};
 
-    char test_addresses[10][100] = {"123 Nguyen Trai, Q1, TP.HCM",
-                                    "456 Le Loi, Q3, TP.HCM",
-                                    "789 Tran Hung Dao, Q5, TP.HCM",
-                                    "101 Vo Van Tan, Q3, TP.HCM",
-                                    "202 Cach Mang Thang 8, Q10, TP.HCM",
-                                    "303 Nguyen Dinh Chieu, Q3, TP.HCM",
-                                    "404 Pham Ngu Lao, Q1, TP.HCM",
-                                    "505 Hai Ba Trung, Q1, TP.HCM",
-                                    "606 Le Van Sy, Phu Nhuan, TP.HCM",
-                                    "707 Truong Chinh, Tan Binh, TP.HCM"};
+    char test_addresses[10][MAX_STR_LEN] = {
+        "123 Nguyen Trai, Q1, TP.HCM",
+        "456 Le Loi, Q3, TP.HCM",
+        "789 Tran Hung Dao, Q5, TP.HCM",
+        "101 Vo Van Tan, Q3, TP.HCM",
+        "202 Cach Mang Thang 8, Q10, TP.HCM",
+        "303 Nguyen Dinh Chieu, Q3, TP.HCM",
+        "404 Pham Ngu Lao, Q1, TP.HCM",
+        "505 Hai Ba Trung, Q1, TP.HCM",
+        "606 Le Van Sy, Phu Nhuan, TP.HCM",
+        "707 Truong Chinh, Tan Binh, TP.HCM"};
 
     // Birth dates (year, month, day)
     int test_birthdates[10][3] = {{1990, 5, 15}, {1985, 8, 22}, {1992, 12, 3},
@@ -146,9 +125,9 @@ int get_user_internal_id(int user_id) {
     if (user_id == 0) {
         return 0;
     }
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < MAX_USERS; i++) {
         if (USERIDS[i] == user_id) {
-            return i + 1;  // Return internal index
+            return i + 1;
         }
     }
     return 0;  // User not found
@@ -158,17 +137,18 @@ int is_existing_user(int user_id) {
     if (user_id == 0) {
         return 0;
     }
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < MAX_USERS; i++) {
         if (USERIDS[i] == user_id) {
             return 1;  // User exists
         }
     }
     return 0;  // User does not exist
 }
+
 int is_user_expired(int user_id) {
     int internal_id = get_user_internal_id(user_id);
     if (internal_id == 0) {
-        return -1;  // User does not exist
+        return 1;  // Non-existing users are considered expired
     }
     int index = internal_id - 1;
     int exp_year = USER_EXPIRATION_DATES[index][0];
@@ -183,7 +163,7 @@ int is_user_expired(int user_id) {
     }
     return 0;  // Not expired
 }
-// Register a new user
+
 void register_user(int user_id) {
     if (is_existing_user(user_id)) {
         printf("Người dùng với CMND %d đã tồn tại.\n", user_id);
@@ -193,7 +173,7 @@ void register_user(int user_id) {
     int user_index = -1;
     int input_year, input_month, input_day;
     char gender_input[10];
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < MAX_USERS; i++) {
         if (USERIDS[i] == 0) {
             user_index = i;
             break;
@@ -201,7 +181,9 @@ void register_user(int user_id) {
     }
 
     if (user_index == -1) {
-        printf("User registration failed: User limit reached.\n");
+        printf(
+            "Đăng ký thất bại. Hệ thống đã đạt đến số lượng người dùng tối "
+            "đa.\n");
         return;
     }
     printf(
@@ -236,8 +218,7 @@ void register_user(int user_id) {
     printf("Tạo tài khoản thành công!\n");
 }
 
-// In thông tin người dùng
-void print_user_info(int user_id, int with_header = 1) {
+void print_user_info(int user_id, int with_header) {
     int internal_id = get_user_internal_id(user_id);
     if (internal_id == 0) {
         printf("Người dùng với CMND %d không tồn tại.\n", user_id);
@@ -276,7 +257,7 @@ void print_user_info(int user_id, int with_header = 1) {
 
 void print_all_users() {
     printf("\n===== Danh sách tất cả người dùng =====\n");
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < MAX_USERS; i++) {
         if (USERIDS[i] != 0) {
             print_user_info(USERIDS[i], 0);
             printf("-----------------------------\n");
@@ -347,7 +328,7 @@ void delete_user(int user_id) {
     initialize_one_user_data(index);
     printf("Xóa người dùng với CMND %d thành công.\n", user_id);
 }
-void get_user_name_by_id(int user_id, char username[100]) {
+void get_user_name_by_id(int user_id, char username[MAX_STR_LEN]) {
     int internal_id = get_user_internal_id(user_id);
     if (internal_id == 0) {
         printf("Người dùng với CMND %d không tồn tại.\n", user_id);

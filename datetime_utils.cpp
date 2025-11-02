@@ -51,8 +51,6 @@ void initialize_current_date() {
     CURRENT_DAY = day;
 }
 
-// 48 months expiration from creation date
-// Example: Creation Date: 2025-10-20 -> Expiration Date: 2029-10-20
 void get_expiration_date(int creation_year, int creation_month,
                          int creation_day, int& exp_year, int& exp_month,
                          int& exp_day) {
@@ -107,7 +105,6 @@ void input_date(int& year, int& month, int& day) {
     }
 }
 
-// Get a date string based on year, month, day
 void get_date_string(char date_str[11], int year, int month, int day) {
     snprintf(date_str, 11, "%02d/%02d/%04d", day, month, year);
 }
