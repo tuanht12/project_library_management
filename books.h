@@ -143,6 +143,7 @@ void delete_book(int isbn);
  * một thông báo rằng cuốn sách không tồn tại trong hệ thống.
  *
  * @param isbn Mã ISBN của cuốn sách cần in thông tin.
+ * @param with_header Có in header với tiêu đề hay không (mặc định là có)
  */
 void print_book_info_by_isbn(int isbn, int with_header = 1);
 
