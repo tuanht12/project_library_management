@@ -16,6 +16,7 @@ void show_user_management_menu() {
         printf("3. Xem tất cả người dùng\n");
         printf("4. Chỉnh sửa thông tin người dùng\n");
         printf("5. Xóa người dùng\n");
+        printf("6. Xem sách đã mượn của người dùng theo tên\n");
         printf("9. Quay lại menu chính\n");
         printf("Hãy chọn một tùy chọn: ");
         safe_scanf_int(choice);
@@ -46,6 +47,12 @@ void show_user_management_menu() {
                 printf("Nhập CMND của người dùng cần xóa: ");
                 safe_scanf_int(delete_user_id);
                 delete_user(delete_user_id);
+            } break;
+            case 6: {
+                char username[100];
+                printf("Nhập tên người dùng để xem sách đã mượn: ");
+                safe_input_str(username, sizeof(username));
+                print_borrowed_books_by_username(username);
             } break;
             case 9:
                 printf("Quay lại menu chính.\n");

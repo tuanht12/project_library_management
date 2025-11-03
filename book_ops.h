@@ -116,3 +116,10 @@ void print_finished_returns();
  * @brief In danh sách tất cả bản ghi mượn sách
  */
 void print_all_borrow_records();
+
+/**
+ * @brief In danh sách sách đã mượn của người dùng theo tên
+ *
+ * @param username Tên người dùng
+ */
+void print_borrowed_books_by_username(char username[MAX_STR_LEN]);

@@ -1,6 +1,7 @@
 #include "book_ops.h"
 
 #include <stdio.h>
+#include <string.h>
 
 #include "books.h"
 #include "configs.h"
@@ -374,5 +375,37 @@ void print_finished_returns() {
                    total_penalty + LATE_PENALTIES[i]);
             printf("-----------------------------\n");
         }
+    }
+}
+
+void print_borrowed_books_by_username(char username[MAX_STR_LEN]) {
+    int user_ids[MAX_USERS];
+    int found = 0;
+
+    for (int i = 0; i < MAX_USERS; i++) {
+        if (USERIDS[i] != 0 && strcmp(USERNAMES[i], username) == 0) {
+            user_ids[found] = USERIDS[i];
+            found++;
+        }
+    }
+    if (found == 0) {
+        printf("Không tìm thấy người dùng với tên '%s'.\n", username);
+        return;
+    }
+    printf("\n===== Danh sách sách đã mượn của người dùng '%s' =====\n",
+           username);
+    int any_borrows = 0;
+    for (int i = 0; i < found; i++) {
+        int user_id = user_ids[i];
+        for (int j = 0; j < MAX_BORROW_RECORDS; j++) {
+            if (BORROW_USER_IDS[j] == user_id) {
+                any_borrows = 1;
+                print_a_borrow_record(BORROW_CARD_IDS[j]);
+                printf("-----------------------------\n");
+            }
+        }
+    }
+    if (!any_borrows) {
+        printf("Người dùng '%s' chưa mượn sách nào.\n", username);
     }
 }
