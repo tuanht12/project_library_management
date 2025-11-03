@@ -72,7 +72,10 @@ void print_number_unreturned_books() {
     for (int i = 0; i < MAX_BORROW_RECORDS; i++) {
         if (BORROW_CARD_IDS[i] != 0 && ACTUAL_RETURN_DATES[i][0] == 0) {
             for (int j = 0; j < 10; j++) {
-                if (BORROWED_ISBNS[i][j] > 0) num_unreturned_books++;
+                if (BORROWED_ISBNS[i][j] == 0) {
+                    break;
+                }
+                num_unreturned_books++;
             }
         }
     }
