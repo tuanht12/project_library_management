@@ -194,14 +194,18 @@ void print_book_info_by_isbn(int isbn, int with_header) {
 }
 
 void print_book_info_by_name(const char book_name[MAX_STR_LEN]) {
+    int found = 0;
     for (int i = 0; i < MAX_BOOKS; i++) {
         if (strcmp(BOOKNAMES[i], book_name) == 0) {
             int isbn = ISBNS[i];
             print_book_info_by_isbn(isbn);
-            return;
+            found = 1;
         }
     }
-    printf("Không tìm thấy sách với tên \"%s\" trong hệ thống.\n", book_name);
+    if (!found) {
+        printf("Không tìm thấy sách với tên \"%s\" trong hệ thống.\n",
+               book_name);
+    }
 }
 
 void edit_book_info(int isbn) {
