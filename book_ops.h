@@ -1,34 +1,27 @@
 #include "configs.h"
-/** @brief Mảng chứa ID của các phiếu mượn sách */
-extern int BORROW_CARD_IDS[MAX_BORROW_RECORDS];
 
-/** @brief Mảng chứa CMND của người mượn tương ứng với mỗi phiếu mượn */
-extern int BORROW_USER_IDS[MAX_BORROW_RECORDS];
-
-/** @brief Mảng chứa ngày mượn sách của mỗi phiếu mượn
- * Định dạng: [năm, tháng, ngày]
- */
-extern int BORROW_DATES[MAX_BORROW_RECORDS][3];
-
-/** @brief Mảng chứa ngày dự kiến trả sách của mỗi phiếu mượn
- * Định dạng: [năm, tháng, ngày]
- */
-extern int EXPECTED_RETURN_DATES[MAX_BORROW_RECORDS][3];
-
-/** @brief Mảng chứa ngày trả thực tế của mỗi phiếu mượn
+/**
+ * @brief Cấu trúc dữ liệu chứa thông tin phiếu mượn sách
  *
- * Định dạng: [năm, tháng, ngày]. Nếu chưa trả, giá trị là [0, 0, 0]
+ * Giá trị card_id = 0 biểu thị slot trống
  */
-extern int ACTUAL_RETURN_DATES[MAX_BORROW_RECORDS][3];
+struct BorrowRecord {
+    int card_id;                  // ID phiếu mượn (0 = slot trống)
+    int user_id;                  // CMND người mượn
+    int borrow_date[3];           // Ngày mượn [năm, tháng, ngày]
+    int expected_return_date[3];  // Ngày dự kiến trả [năm, tháng, ngày]
+    int actual_return_date[3];  // Ngày trả thực tế [năm, tháng, ngày] (0,0,0 =
+                                // chưa trả)
+    int borrowed_isbns[MAX_BORROWED_BOOKS];   // Danh sách ISBN sách được mượn
+    long late_penalty;                        // Phí phạt trễ hạn (VND)
+    long lost_penalties[MAX_BORROWED_BOOKS];  // Phí phạt mất sách cho từng cuốn
+                                              // (VND)
+};
 
-/** @brief Mảng chứa ISBN các sách được mượn trong mỗi phiếu mượn */
-extern int BORROWED_ISBNS[MAX_BORROW_RECORDS][MAX_BORROWED_BOOKS];
-
-/** @brief Mảng chứa phí phạt trễ hạn cho mỗi phiếu mượn */
-extern long LATE_PENALTIES[MAX_BORROW_RECORDS];
-
-/** @brief Mảng chứa phí phạt mất sách cho mỗi sách trong mỗi phiếu mượn */
-extern long LOST_PENALTIES[MAX_BORROW_RECORDS][MAX_BORROWED_BOOKS];
+/**
+ * @brief Mảng chứa tất cả phiếu mượn sách trong hệ thống
+ */
+extern BorrowRecord BORROW_RECORDS[MAX_BORROW_RECORDS];
 
 /**
  * @brief Khởi tạo một phiếu mượn sách về trạng thái rỗng

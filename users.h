@@ -1,70 +1,25 @@
 #include "configs.h"
 
 /**
- * @brief Mảng chứa CMND của tất cả người dùng trong hệ thống
+ * @brief Cấu trúc dữ liệu chứa thông tin người dùng
  *
- * Giá trị 0 biểu thị slot trống, các giá trị khác là CMND hợp lệ
- *
- * @note Index của mảng này tương ứng với index của các mảng người dùng khác
+ * Giá trị id = 0 biểu thị slot trống
  */
-extern int USERIDS[MAX_USERS];
+struct User {
+    int id;                     // CMND người dùng (0 = slot trống)
+    char name[MAX_STR_LEN];     // Tên đầy đủ
+    int gender;                 // Giới tính (0: Nữ, 1: Nam, -1: Chưa xác định)
+    char email[MAX_STR_LEN];    // Email
+    char address[MAX_STR_LEN];  // Địa chỉ thường trú
+    int birthdate[3];           // Ngày sinh [năm, tháng, ngày]
+    int creation_date[3];       // Ngày tạo tài khoản [năm, tháng, ngày]
+    int expiration_date[3];     // Ngày hết hạn tài khoản [năm, tháng, ngày]
+};
 
 /**
- * @brief Mảng chứa tên đầy đủ của người dùng
- *
- * Chuỗi rỗng ("") biểu thị slot trống
- *
- * @note Độ dài tối đa mỗi tên là MAX_STR_LEN ký tự
+ * @brief Mảng chứa tất cả người dùng trong hệ thống
  */
-extern char USERNAMES[MAX_USERS][MAX_STR_LEN];
-
-/**
- * @brief Mảng chứa giới tính của người dùng
- *
- * 0: Nữ, 1: Nam, -1: Slot trống
- */
-extern int USER_GENDERS[MAX_USERS];
-
-/**
- * @brief Mảng chứa địa chỉ email của người dùng
- *
- * Chuỗi rỗng ("") biểu thị slot trống hoặc không có email
- */
-extern char USER_EMAILS[MAX_USERS][MAX_STR_LEN];
-
-/**
- * @brief Mảng chứa địa chỉ thường trú của người dùng
- *
- * Chuỗi rỗng ("") biểu thị slot trống hoặc không có địa chỉ
- */
-extern char USER_ADDRESSES[MAX_USERS][MAX_STR_LEN];
-
-/**
- * @brief Mảng chứa ngày sinh của người dùng
- *
- * Định dạng: [năm, tháng, ngày]. VD: [1990, 5, 15] = 15/5/1990
- *
- * @note [0, 0, 0] biểu thị slot trống hoặc ngày sinh chưa được thiết lập
- */
-extern int USER_BIRTHDATES[MAX_USERS][3];
-
-/**
- * @brief Mảng chứa ngày tạo tài khoản của người dùng
- *
- * Định dạng: [năm, tháng, ngày]. Tự động thiết lập khi đăng ký
- *
- * @note [0, 0, 0] biểu thị slot trống
- */
-extern int USER_CREATION_DATES[MAX_USERS][3];
-
-/**
- * @brief Mảng chứa ngày hết hạn tài khoản của người dùng
- *
- * Định dạng: [năm, tháng, ngày]. Tài khoản hết hạn không thể mượn sách
- *
- * @note [0, 0, 0] biểu thị tài khoản không có hạn sử dụng
- */
-extern int USER_EXPIRATION_DATES[MAX_USERS][3];
+extern User USERS[MAX_USERS];
 
 /**
  * @brief Khởi tạo một người dùng về trạng thái rỗng

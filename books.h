@@ -1,69 +1,25 @@
 #include "configs.h"
-/**
- * @brief Mảng chứa mã ISBN của tất cả cuốn sách trong hệ thống
- *
- * Giá trị 0 biểu thị slot trống, các giá trị khác là mã ISBN hợp lệ
- *
- * @note Index của mảng này tương ứng với index của các mảng sách khác
- */
-extern int ISBNS[MAX_BOOKS];
 
 /**
- * @brief Mảng chứa tên của các cuốn sách
+ * @brief Cấu trúc dữ liệu chứa thông tin một cuốn sách
  *
- * Chuỗi rỗng ("") biểu thị slot trống
- *
- * @note Độ dài tối đa mỗi tên sách là MAX_STR_LEN ký tự
+ * Giá trị isbn = 0 biểu thị slot trống
  */
-extern char BOOKNAMES[MAX_BOOKS][MAX_STR_LEN];
+struct Book {
+    int isbn;                     // Mã ISBN của sách (0 = slot trống)
+    char name[MAX_STR_LEN];       // Tên sách
+    char author[MAX_STR_LEN];     // Tác giả
+    char publisher[MAX_STR_LEN];  // Nhà xuất bản
+    int year;                     // Năm xuất bản
+    char genre[MAX_STR_LEN];      // Thể loại
+    int price;                    // Giá sách (VND)
+    int count;                    // Số lượng bản sao hiện có
+};
 
 /**
- * @brief Mảng chứa tác giả của các cuốn sách
- *
- * Chuỗi rỗng ("") biểu thị slot trống hoặc không có tác giả
+ * @brief Mảng chứa tất cả sách trong hệ thống
  */
-extern char BOOKAUTHORS[MAX_BOOKS][MAX_STR_LEN];
-
-/**
- * @brief Mảng chứa nhà xuất bản của các cuốn sách
- *
- * Chuỗi rỗng ("") biểu thị slot trống hoặc không có nhà xuất bản
- */
-extern char BOOKPUBLISHERS[MAX_BOOKS][MAX_STR_LEN];
-
-/**
- * @brief Mảng chứa năm xuất bản của các cuốn sách
- *
- * Giá trị 0 biểu thị slot trống hoặc không có năm xuất bản
- */
-extern int BOOKYEARS[MAX_BOOKS];
-
-/**
- * @brief Mảng chứa thể loại của các cuốn sách
- *
- * Chuỗi rỗng ("") biểu thị slot trống hoặc không có thể loại
- */
-extern char BOOKGENRES[MAX_BOOKS][MAX_STR_LEN];
-
-/**
- * @brief Mảng chứa giá của các cuốn sách
- *
- * Giá trị 0 biểu thị slot trống hoặc không có giá
- */
-extern int BOOKPRICES[MAX_BOOKS];
-
-/**
- * @brief Mảng chứa số lượng bản sao hiện có của các cuốn sách
- *
- * Giá trị 0 biểu thị slot trống hoặc không còn bản sao nào
- */
-
-/**
- * @brief Mảng chứa số lượng bản sao hiện có của các cuốn sách
- *
- * Giá trị 0 biểu thị slot trống hoặc không còn bản sao nào
- */
-extern int BOOKCOUNTS[MAX_BOOKS];
+extern Book BOOKS[MAX_BOOKS];
 
 /**
  * @brief Khởi tạo một cuốn sách về trạng thái rỗng
