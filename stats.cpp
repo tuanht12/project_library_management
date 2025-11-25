@@ -11,7 +11,7 @@
 void print_total_number_of_books() {
     int total_books = 0;
     for (int i = 0; i < MAX_BOOKS; i++) {
-        total_books += BOOKCOUNTS[i];
+        total_books += BOOKS[i].count;
     }
     printf("Tổng số  cuốn sách trong thư viện: %d cuốn.\n", total_books);
 }
@@ -20,23 +20,23 @@ void print_number_books_by_genre() {
     char current_genre[MAX_STR_LEN];
 
     for (int i = 0; i < MAX_BOOKS; i++) {
-        if (BOOKCOUNTS[i] == 0) {
+        if (BOOKS[i].count == 0) {
             continue;
         }
-        strcpy(current_genre, BOOKGENRES[i]);
+        strcpy(current_genre, BOOKS[i].genre);
         int has_done = 0;
         for (int j = 0; j < i; j++) {
-            if (strcmp(BOOKGENRES[j], current_genre) == 0) {
+            if (strcmp(BOOKS[j].genre, current_genre) == 0) {
                 has_done = 1;
                 break;
             }
         }
         if (has_done) continue;
 
-        int current_count = BOOKCOUNTS[i];
-        for (int j = i + 1; j < 100; j++) {
-            if (strcmp(BOOKGENRES[j], current_genre) == 0) {
-                current_count += BOOKCOUNTS[j];
+        int current_count = BOOKS[i].count;
+        for (int j = i + 1; j < MAX_BOOKS; j++) {
+            if (strcmp(BOOKS[j].genre, current_genre) == 0) {
+                current_count += BOOKS[j].count;
             }
         }
         printf("Số lượng sách thể loại %s: %d cuốn.\n", current_genre,
@@ -47,7 +47,7 @@ void print_number_books_by_genre() {
 void print_number_users() {
     int user_counts = 0;
     for (int i = 0; i < MAX_USERS; i++) {
-        if (USERIDS[i] > 0) user_counts++;
+        if (USERS[i].id > 0) user_counts++;
     }
     printf("Số lượng người dùng hiện tại là: %d người.", user_counts);
 }
@@ -56,8 +56,8 @@ void print_number_users_by_gender() {
     int num_male = 0;
     int num_female = 0;
     for (int i = 0; i < MAX_USERS; i++) {
-        if (USERIDS[i] <= 0) continue;
-        if (USER_GENDERS[i] == 0) {
+        if (USERS[i].id <= 0) continue;
+        if (USERS[i].gender == 0) {
             num_female++;
         } else {
             num_male++;
@@ -70,9 +70,10 @@ void print_number_users_by_gender() {
 void print_number_unreturned_books() {
     int num_unreturned_books = 0;
     for (int i = 0; i < MAX_BORROW_RECORDS; i++) {
-        if (BORROW_CARD_IDS[i] != 0 && ACTUAL_RETURN_DATES[i][0] == 0) {
+        if (BORROW_RECORDS[i].card_id != 0 &&
+            BORROW_RECORDS[i].actual_return_date[0] == 0) {
             for (int j = 0; j < 10; j++) {
-                if (BORROWED_ISBNS[i][j] == 0) {
+                if (BORROW_RECORDS[i].borrowed_isbns[j] == 0) {
                     break;
                 }
                 num_unreturned_books++;
@@ -87,13 +88,14 @@ void print_late_return_user(int user_id) {
     int num_late_days = 0;
     int max_late_borrow_card_id = 0;
     for (int i = 0; i < MAX_BORROW_RECORDS; i++) {
-        if (BORROW_USER_IDS[i] != user_id) continue;
+        if (BORROW_RECORDS[i].user_id != user_id) continue;
         int days_between = calculate_days_between(
-            BORROW_DATES[i][0], BORROW_DATES[i][1], BORROW_DATES[i][2],
-            CURRENT_YEAR, CURRENT_MONTH, CURRENT_DAY);
+            BORROW_RECORDS[i].borrow_date[0], BORROW_RECORDS[i].borrow_date[1],
+            BORROW_RECORDS[i].borrow_date[2], CURRENT_YEAR, CURRENT_MONTH,
+            CURRENT_DAY);
         if (days_between > 7 and days_between - 7 > num_late_days) {
             num_late_days = days_between - 7;
-            max_late_borrow_card_id = BORROW_CARD_IDS[i];
+            max_late_borrow_card_id = BORROW_RECORDS[i].card_id;
         }
     }
 
@@ -110,11 +112,12 @@ void print_late_return_user(int user_id) {
 void print_current_late_users() {
     printf("Danh sách người dùng đang mượn sách quá hạn:\n");
     for (int i = 0; i < MAX_BORROW_RECORDS; i++) {
-        if (BORROW_CARD_IDS[i] != 0 && ACTUAL_RETURN_DATES[i][0] == 0) {
+        if (BORROW_RECORDS[i].card_id != 0 &&
+            BORROW_RECORDS[i].actual_return_date[0] == 0) {
             int found = 0;
-            int current_uid = BORROW_USER_IDS[i];
+            int current_uid = BORROW_RECORDS[i].user_id;
             for (int j = 0; j < i; j++) {
-                if (BORROW_USER_IDS[j] == current_uid) {
+                if (BORROW_RECORDS[j].user_id == current_uid) {
                     found = 1;
                     break;
                 }

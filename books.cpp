@@ -6,24 +6,17 @@
 #include "configs.h"
 #include "utils.h"
 
-int ISBNS[MAX_BOOKS];
-char BOOKNAMES[MAX_BOOKS][MAX_STR_LEN];
-char BOOKAUTHORS[MAX_BOOKS][MAX_STR_LEN];
-char BOOKPUBLISHERS[MAX_BOOKS][MAX_STR_LEN];
-int BOOKYEARS[MAX_BOOKS];
-char BOOKGENRES[MAX_BOOKS][MAX_STR_LEN];
-int BOOKPRICES[MAX_BOOKS];
-int BOOKCOUNTS[MAX_BOOKS];
+Book BOOKS[MAX_BOOKS];
 
 void initialize_one_book_data(int index) {
-    ISBNS[index] = 0;
-    BOOKYEARS[index] = 0;
-    BOOKCOUNTS[index] = 0;
-    BOOKNAMES[index][0] = '\0';
-    BOOKAUTHORS[index][0] = '\0';
-    BOOKPUBLISHERS[index][0] = '\0';
-    BOOKGENRES[index][0] = '\0';
-    BOOKPRICES[index] = 0;
+    BOOKS[index].isbn = 0;
+    BOOKS[index].year = 0;
+    BOOKS[index].count = 0;
+    BOOKS[index].price = 0;
+    BOOKS[index].name[0] = '\0';
+    BOOKS[index].author[0] = '\0';
+    BOOKS[index].publisher[0] = '\0';
+    BOOKS[index].genre[0] = '\0';
 }
 
 void initialize_book_data() {
@@ -74,22 +67,22 @@ void initialize_test_books() {
 
     int test_counts[10] = {5, 3, 7, 10, 8, 4, 6, 2, 3, 5};
 
-    // Vòng lặp để gán dữ liệu vào các mảng toàn cục
+    // Vòng lặp để gán dữ liệu vào mảng struct
     for (int i = 0; i < 10; i++) {
-        ISBNS[i] = test_isbns[i];
-        strcpy(BOOKNAMES[i], test_names[i]);
-        strcpy(BOOKAUTHORS[i], test_authors[i]);
-        strcpy(BOOKPUBLISHERS[i], test_publishers[i]);
-        BOOKYEARS[i] = test_years[i];
-        strcpy(BOOKGENRES[i], test_genres[i]);
-        BOOKPRICES[i] = test_prices[i];
-        BOOKCOUNTS[i] = test_counts[i];
+        BOOKS[i].isbn = test_isbns[i];
+        strcpy(BOOKS[i].name, test_names[i]);
+        strcpy(BOOKS[i].author, test_authors[i]);
+        strcpy(BOOKS[i].publisher, test_publishers[i]);
+        BOOKS[i].year = test_years[i];
+        strcpy(BOOKS[i].genre, test_genres[i]);
+        BOOKS[i].price = test_prices[i];
+        BOOKS[i].count = test_counts[i];
     }
 
     printf("Da khoi tao 10 cuon sach mau cho testing!\n");
     printf("ID cua cac cuon sach: ");
     for (int i = 0; i < 10; i++) {
-        printf("%d", ISBNS[i]);
+        printf("%d", BOOKS[i].isbn);
         if (i < 9) printf(", ");
     }
     printf("\n");
@@ -98,8 +91,8 @@ void initialize_test_books() {
 void print_all_books() {
     printf("\n===== Danh sách tất cả sách =====\n");
     for (int i = 0; i < MAX_BOOKS; i++) {
-        if (ISBNS[i] != 0) {
-            print_book_info_by_isbn(ISBNS[i], 0);
+        if (BOOKS[i].isbn != 0) {
+            print_book_info_by_isbn(BOOKS[i].isbn, 0);
             printf("-----------------------------\n");
         }
     }
@@ -111,17 +104,17 @@ void add_book(int isbn, int num_copies) {
         return;
     }
     for (int i = 0; i < MAX_BOOKS; i++) {
-        if (ISBNS[i] == isbn) {
-            BOOKCOUNTS[i] += num_copies;
+        if (BOOKS[i].isbn == isbn) {
+            BOOKS[i].count += num_copies;
             printf(
                 "Đã thêm %d bản cho sách ISBN %d. Tổng số lượng hiện tại: %d\n",
-                num_copies, isbn, BOOKCOUNTS[i]);
+                num_copies, isbn, BOOKS[i].count);
             return;
         }
     }
     int new_book_index = -1;
     for (int i = 0; i < MAX_BOOKS; i++) {
-        if (ISBNS[i] == 0) {
+        if (BOOKS[i].isbn == 0) {
             new_book_index = i;
             break;
         }
@@ -132,39 +125,39 @@ void add_book(int isbn, int num_copies) {
         return;
     }
 
-    ISBNS[new_book_index] = isbn;
-    BOOKCOUNTS[new_book_index] = num_copies;
+    BOOKS[new_book_index].isbn = isbn;
+    BOOKS[new_book_index].count = num_copies;
     printf("Nhập tên sách: ");
-    safe_input_str(BOOKNAMES[new_book_index],
-                   sizeof(BOOKNAMES[new_book_index]));
+    safe_input_str(BOOKS[new_book_index].name,
+                   sizeof(BOOKS[new_book_index].name));
     printf("Nhập tác giả: ");
-    safe_input_str(BOOKAUTHORS[new_book_index],
-                   sizeof(BOOKAUTHORS[new_book_index]));
+    safe_input_str(BOOKS[new_book_index].author,
+                   sizeof(BOOKS[new_book_index].author));
     printf("Nhập nhà xuất bản: ");
-    safe_input_str(BOOKPUBLISHERS[new_book_index],
-                   sizeof(BOOKPUBLISHERS[new_book_index]));
+    safe_input_str(BOOKS[new_book_index].publisher,
+                   sizeof(BOOKS[new_book_index].publisher));
     printf("Nhập năm xuất bản: ");
-    safe_scanf_int(BOOKYEARS[new_book_index]);
-    while (BOOKYEARS[new_book_index] <= 0) {
+    safe_scanf_int(BOOKS[new_book_index].year);
+    while (BOOKS[new_book_index].year <= 0) {
         printf("Năm xuất bản không hợp lệ. Vui lòng nhập lại: ");
-        safe_scanf_int(BOOKYEARS[new_book_index]);
+        safe_scanf_int(BOOKS[new_book_index].year);
     }
 
     printf("Nhập thể loại: ");
-    safe_input_str(BOOKGENRES[new_book_index],
-                   sizeof(BOOKGENRES[new_book_index]));
+    safe_input_str(BOOKS[new_book_index].genre,
+                   sizeof(BOOKS[new_book_index].genre));
     printf("Nhập giá sách: ");
-    safe_scanf_int(BOOKPRICES[new_book_index]);
-    while (BOOKPRICES[new_book_index] < 0) {
+    safe_scanf_int(BOOKS[new_book_index].price);
+    while (BOOKS[new_book_index].price < 0) {
         printf("Giá sách không hợp lệ. Vui lòng nhập lại: ");
-        safe_scanf_int(BOOKPRICES[new_book_index]);
+        safe_scanf_int(BOOKS[new_book_index].price);
     }
     printf("Đã thêm sách mới với ISBN %d và số lượng %d\n", isbn, num_copies);
 }
 
 void delete_book(int isbn) {
     for (int i = 0; i < MAX_BOOKS; i++) {
-        if (ISBNS[i] == isbn) {
+        if (BOOKS[i].isbn == isbn) {
             initialize_one_book_data(i);
             printf("Đã xóa sách với ISBN %d khỏi hệ thống.\n", isbn);
             return;
@@ -175,18 +168,18 @@ void delete_book(int isbn) {
 
 void print_book_info_by_isbn(int isbn, int with_header) {
     for (int i = 0; i < MAX_BOOKS; i++) {
-        if (ISBNS[i] == isbn) {
+        if (BOOKS[i].isbn == isbn) {
             if (with_header) {
                 printf("\n--- Thông tin sách ---\n");
             }
-            printf("ISBN: %d\n", ISBNS[i]);
-            printf("Tên sách: %s\n", BOOKNAMES[i]);
-            printf("Tác giả: %s\n", BOOKAUTHORS[i]);
-            printf("Nhà xuất bản: %s\n", BOOKPUBLISHERS[i]);
-            printf("Năm xuất bản: %d\n", BOOKYEARS[i]);
-            printf("Thể loại: %s\n", BOOKGENRES[i]);
-            printf("Giá sách: %d VND\n", BOOKPRICES[i]);
-            printf("Số lượng hiện có: %d\n", BOOKCOUNTS[i]);
+            printf("ISBN: %d\n", BOOKS[i].isbn);
+            printf("Tên sách: %s\n", BOOKS[i].name);
+            printf("Tác giả: %s\n", BOOKS[i].author);
+            printf("Nhà xuất bản: %s\n", BOOKS[i].publisher);
+            printf("Năm xuất bản: %d\n", BOOKS[i].year);
+            printf("Thể loại: %s\n", BOOKS[i].genre);
+            printf("Giá sách: %d VND\n", BOOKS[i].price);
+            printf("Số lượng hiện có: %d\n", BOOKS[i].count);
             return;
         }
     }
@@ -196,8 +189,8 @@ void print_book_info_by_isbn(int isbn, int with_header) {
 void print_book_info_by_name(const char book_name[MAX_STR_LEN]) {
     int found = 0;
     for (int i = 0; i < MAX_BOOKS; i++) {
-        if (strcmp(BOOKNAMES[i], book_name) == 0) {
-            int isbn = ISBNS[i];
+        if (strcmp(BOOKS[i].name, book_name) == 0) {
+            int isbn = BOOKS[i].isbn;
             print_book_info_by_isbn(isbn);
             found = 1;
         }
@@ -210,61 +203,61 @@ void print_book_info_by_name(const char book_name[MAX_STR_LEN]) {
 
 void edit_book_info(int isbn) {
     for (int i = 0; i < MAX_BOOKS; i++) {
-        if (ISBNS[i] == isbn) {
+        if (BOOKS[i].isbn == isbn) {
             printf("Chỉnh sửa thông tin cho sách với ISBN %d\n", isbn);
             printf("Nhấn Enter để bỏ qua trường không muốn chỉnh sửa.\n");
 
-            printf("Tên sách hiện tại: %s\n", BOOKNAMES[i]);
+            printf("Tên sách hiện tại: %s\n", BOOKS[i].name);
             if (ask_to_edit_field()) {
                 printf("Nhập tên sách mới: ");
-                safe_input_str(BOOKNAMES[i], sizeof(BOOKNAMES[i]));
+                safe_input_str(BOOKS[i].name, sizeof(BOOKS[i].name));
             }
 
-            printf("Tác giả hiện tại: %s\n", BOOKAUTHORS[i]);
+            printf("Tác giả hiện tại: %s\n", BOOKS[i].author);
             if (ask_to_edit_field()) {
                 printf("Nhập tác giả mới: ");
-                safe_input_str(BOOKAUTHORS[i], sizeof(BOOKAUTHORS[i]));
+                safe_input_str(BOOKS[i].author, sizeof(BOOKS[i].author));
             }
 
-            printf("Nhà xuất bản hiện tại: %s\n", BOOKPUBLISHERS[i]);
+            printf("Nhà xuất bản hiện tại: %s\n", BOOKS[i].publisher);
             if (ask_to_edit_field()) {
                 printf("Nhập nhà xuất bản mới: ");
-                safe_input_str(BOOKPUBLISHERS[i], sizeof(BOOKPUBLISHERS[i]));
+                safe_input_str(BOOKS[i].publisher, sizeof(BOOKS[i].publisher));
             }
 
-            printf("Năm xuất bản hiện tại: %d\n", BOOKYEARS[i]);
+            printf("Năm xuất bản hiện tại: %d\n", BOOKS[i].year);
             if (ask_to_edit_field()) {
                 printf("Nhập năm xuất bản mới: ");
-                safe_scanf_int(BOOKYEARS[i]);
-                while (BOOKYEARS[i] <= 0) {
+                safe_scanf_int(BOOKS[i].year);
+                while (BOOKS[i].year <= 0) {
                     printf("Năm xuất bản không hợp lệ. Vui lòng nhập lại: ");
-                    safe_scanf_int(BOOKYEARS[i]);
+                    safe_scanf_int(BOOKS[i].year);
                 }
             }
 
-            printf("Thể loại hiện tại: %s\n", BOOKGENRES[i]);
+            printf("Thể loại hiện tại: %s\n", BOOKS[i].genre);
             if (ask_to_edit_field()) {
                 printf("Nhập thể loại mới: ");
-                safe_input_str(BOOKGENRES[i], sizeof(BOOKGENRES[i]));
+                safe_input_str(BOOKS[i].genre, sizeof(BOOKS[i].genre));
             }
 
-            printf("Giá sách hiện tại: %d VND\n", BOOKPRICES[i]);
+            printf("Giá sách hiện tại: %d VND\n", BOOKS[i].price);
             if (ask_to_edit_field()) {
                 printf("Nhập giá sách mới: ");
-                safe_scanf_int(BOOKPRICES[i]);
-                while (BOOKPRICES[i] < 0) {
+                safe_scanf_int(BOOKS[i].price);
+                while (BOOKS[i].price < 0) {
                     printf("Giá sách không hợp lệ. Vui lòng nhập lại: ");
-                    safe_scanf_int(BOOKPRICES[i]);
+                    safe_scanf_int(BOOKS[i].price);
                 }
             }
 
-            printf("Số lượng hiện tại: %d\n", BOOKCOUNTS[i]);
+            printf("Số lượng hiện tại: %d\n", BOOKS[i].count);
             if (ask_to_edit_field()) {
                 printf("Nhập số lượng mới: ");
-                safe_scanf_int(BOOKCOUNTS[i]);
-                while (BOOKCOUNTS[i] < 0) {
+                safe_scanf_int(BOOKS[i].count);
+                while (BOOKS[i].count < 0) {
                     printf("Số lượng không hợp lệ. Vui lòng nhập lại: ");
-                    safe_scanf_int(BOOKCOUNTS[i]);
+                    safe_scanf_int(BOOKS[i].count);
                 }
             }
 
@@ -277,9 +270,9 @@ void edit_book_info(int isbn) {
 
 int borrow_book(int isbn) {
     for (int i = 0; i < MAX_BOOKS; i++) {
-        if (ISBNS[i] == isbn) {
-            if (BOOKCOUNTS[i] > 0) {
-                BOOKCOUNTS[i]--;
+        if (BOOKS[i].isbn == isbn) {
+            if (BOOKS[i].count > 0) {
+                BOOKS[i].count--;
                 printf("Đã mượn sách với ISBN %d thành công.\n", isbn);
                 return 1;
             } else {
@@ -294,8 +287,8 @@ int borrow_book(int isbn) {
 
 int return_book(int isbn) {
     for (int i = 0; i < MAX_BOOKS; i++) {
-        if (ISBNS[i] == isbn) {
-            BOOKCOUNTS[i]++;
+        if (BOOKS[i].isbn == isbn) {
+            BOOKS[i].count++;
             printf("Đã trả sách với ISBN %d thành công.\n", isbn);
             return 1;
         }
@@ -306,8 +299,8 @@ int return_book(int isbn) {
 
 int get_price_by_isbn(int isbn) {
     for (int i = 0; i < MAX_BOOKS; i++) {
-        if (ISBNS[i] == isbn) {
-            return BOOKPRICES[i];
+        if (BOOKS[i].isbn == isbn) {
+            return BOOKS[i].price;
         }
     }
     return 0;
@@ -315,8 +308,8 @@ int get_price_by_isbn(int isbn) {
 
 void get_book_name_by_isbn(int isbn, char book_name[MAX_STR_LEN]) {
     for (int i = 0; i < MAX_BOOKS; i++) {
-        if (ISBNS[i] == isbn) {
-            strcpy(book_name, BOOKNAMES[i]);
+        if (BOOKS[i].isbn == isbn) {
+            strcpy(book_name, BOOKS[i].name);
             return;
         }
     }
