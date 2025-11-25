@@ -231,9 +231,8 @@ void print_user_info(int user_id, int with_header) {
     printf("CMND: %d\n", USERS[index].id);
     printf("Mã số bạn đọc: %d\n", internal_id);
     printf("Tên: %s\n", USERS[index].name);
-    get_date_string(date_str, USERS[index].creation_date[0],
-                    USERS[index].creation_date[1],
-                    USERS[index].creation_date[2]);
+    get_date_string(date_str, USERS[index].birthdate[0],
+                    USERS[index].birthdate[1], USERS[index].birthdate[2]);
     printf("Ngày sinh: %s\n", date_str);
     printf("Giới tính: %s\n", gender_str);
     printf("Email: %s\n", USERS[index].email);

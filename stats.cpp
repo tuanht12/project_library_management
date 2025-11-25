@@ -34,7 +34,7 @@ void print_number_books_by_genre() {
         if (has_done) continue;
 
         int current_count = BOOKS[i].count;
-        for (int j = i + 1; j < 100; j++) {
+        for (int j = i + 1; j < MAX_BOOKS; j++) {
             if (strcmp(BOOKS[j].genre, current_genre) == 0) {
                 current_count += BOOKS[j].count;
             }
