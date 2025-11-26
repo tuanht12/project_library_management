@@ -158,9 +158,6 @@ void add_book(int isbn, int num_copies) {
 void delete_book(int isbn) {
     for (int i = 0; i < MAX_BOOKS; i++) {
         if (BOOKS[i].isbn == isbn) {
-            initialize_one_book_data(i);
-            printf("Đã xóa sách với ISBN %d khỏi hệ thống.\n", isbn);
-
             // Chuyển các sách phía sau lên trước để lấp khoảng trống
             int j = i;
             ;
@@ -169,6 +166,7 @@ void delete_book(int isbn) {
                 j++;
             }
             initialize_one_book_data(j);  // Khởi tạo lại slot cuối cùng
+            printf("Đã xóa sách với ISBN %d khỏi hệ thống.\n", isbn);
             return;
         }
     }

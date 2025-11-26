@@ -20,3 +20,7 @@
 #define CSV_DELIMITER "|"
 /** Đường dẫn tới file CSV chứa dữ liệu sách */
 #define BOOKS_CSV_PATH "books.csv"
+/** Đường dẫn tới file CSV chứa dữ liệu người dùng */
+#define USERS_CSV_PATH "users.csv"
+/** Đường dẫn tới file CSV chứa dữ liệu phiếu mượn */
+#define BORROWS_CSV_PATH "borrows.csv"
