@@ -317,7 +317,11 @@ void delete_user(int user_id) {
         return;
     }
     int index = internal_id - 1;
-    initialize_one_user_data(index);
+    while (index < MAX_USERS - 1 && USERS[index + 1].id != 0) {
+        USERS[index] = USERS[index + 1];
+        index++;
+    }
+    initialize_one_user_data(index);  // Khởi tạo lại slot cuối cùng
     printf("Xóa người dùng với CMND %d thành công.\n", user_id);
 }
 

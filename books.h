@@ -75,9 +75,7 @@ void edit_book_info(int isbn);
  * @brief Xóa một cuốn sách khỏi hệ thống dựa trên mã ISBN.
  *
  * Hàm này tìm kiếm trong mảng `ISBNS` để tìm một cuốn sách có mã ISBN
- * trùng khớp. Khi tìm thấy, nó sẽ gọi hàm `initialize_one_book_data()` để
- * đặt lại tất cả thông tin của cuốn sách tại vị trí đó về giá trị mặc định.
- * Đây là một phương pháp "xóa mềm" (soft delete).
+ * trùng khớp. Khi tìm thấy, nó sẽ xóa cuốn sách đó khỏi hệ thống.
  *
  * @param isbn Mã ISBN của cuốn sách cần xóa.
  *

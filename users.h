@@ -92,8 +92,6 @@ void edit_user_info(int user_id);
 /**
  * @brief Xóa người dùng khỏi hệ thống
  *
- * Thiết lập lại tất cả thông tin về trạng thái rỗng
- *
  * @param user_id CMND của người dùng cần xóa
  *
  * @warning Không thể khôi phục sau khi xóa
