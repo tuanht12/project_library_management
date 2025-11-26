@@ -16,3 +16,7 @@
 #define MAX_BORROW_DAYS 7
 /** Hệ số tính phí phạt mất sách */
 #define LOST_PENALTY_FACTOR 2
+/** Ký tự phân tách trong file CSV */
+#define CSV_DELIMITER "|"
+/** Đường dẫn tới file CSV chứa dữ liệu sách */
+#define BOOKS_CSV_PATH "books.csv"

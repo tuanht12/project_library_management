@@ -160,6 +160,15 @@ void delete_book(int isbn) {
         if (BOOKS[i].isbn == isbn) {
             initialize_one_book_data(i);
             printf("Đã xóa sách với ISBN %d khỏi hệ thống.\n", isbn);
+
+            // Chuyển các sách phía sau lên trước để lấp khoảng trống
+            int j = i;
+            ;
+            while (j < MAX_BOOKS - 1 && BOOKS[j + 1].isbn != 0) {
+                BOOKS[j] = BOOKS[j + 1];
+                j++;
+            }
+            initialize_one_book_data(j);  // Khởi tạo lại slot cuối cùng
             return;
         }
     }
