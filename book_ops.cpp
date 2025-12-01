@@ -65,9 +65,9 @@ void initialize_test_borrows() {
     int test_lost_flags[5][10] = {
         {0, 0},     // No lost books for user 1
         {0},        // No lost books for user 2
-        {0, 1, 0},  // User 3 lost book with ISBN 1005
+        {0, 1, 1},  // User 3 lost book with ISBN 1005
         {0},        // No lost books for user 4
-        {1, 0}      // User 5 lost book with ISBN 1008
+        {0, 0}      // User 5 lost book with ISBN 1008
     };
 
     for (int i = 0; i < 5; i++) {
