@@ -49,3 +49,19 @@ void safe_scanf_int(int& var);
  * @return 1 nếu người dùng muốn chỉnh sửa, 0 nếu không muốn
  */
 int ask_to_edit_field();
+
+/**
+ * @brief Nhập một số nguyên dài an toàn từ người dùng
+ *
+ * Hàm này sử dụng scanf() để đọc một số nguyên dài từ stdin và sau đó
+ * gọi cleanup_input_buffer() để loại bỏ các ký tự thừa trong buffer đầu vào.
+ *
+ * @param var Biến tham chiếu để lưu trữ số nguyên dài nhập vào
+ *
+ * @example
+ * long age;
+ * printf("Mời bạn nhập giá tiền: ");
+ * safe_scanf_long(price);
+ * // Biến 'price]' bây giờ chứa một giá trị số nguyên hợp lệ.
+ */
+void safe_scanf_long(long& var);

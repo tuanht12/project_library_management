@@ -8,7 +8,7 @@
 #include "books.h"
 #include "configs.h"
 #include "users.h"
-int BUFFER_SIZE = 1024;
+
 void write_books_to_csv() {
     FILE* file = fopen(BOOKS_CSV_PATH, "w");
     if (file == NULL) {
@@ -17,17 +17,21 @@ void write_books_to_csv() {
     }
 
     // Ghi tiêu đề cột
-    fprintf(file, "ID%sTitle%sAuthor%sPublisher%sYear%sQuantity\n",
+    fprintf(file, "isbn%sname%sauthor%spublisher%syear%sgenre%sprice%scount\n",
             CSV_DELIMITER, CSV_DELIMITER, CSV_DELIMITER, CSV_DELIMITER,
-            CSV_DELIMITER);
+            CSV_DELIMITER, CSV_DELIMITER, CSV_DELIMITER);
 
     // Ghi dữ liệu sách
     for (int i = 0; i < MAX_BOOKS; i++) {
         if (BOOKS[i].isbn != 0) {
-            fprintf(file, "%d%s%s%s%s%s%s%s%d%s%d\n", BOOKS[i].isbn,
-                    CSV_DELIMITER, BOOKS[i].name, CSV_DELIMITER,
-                    BOOKS[i].author, CSV_DELIMITER, BOOKS[i].publisher,
-                    CSV_DELIMITER, BOOKS[i].year, CSV_DELIMITER,
+            fprintf(file, "%d%s%s%s%s%s%s%s%d%s%s%s%ld%s%d\n",
+                    BOOKS[i].isbn, CSV_DELIMITER,
+                    BOOKS[i].name, CSV_DELIMITER,
+                    BOOKS[i].author, CSV_DELIMITER,
+                    BOOKS[i].publisher, CSV_DELIMITER,
+                    BOOKS[i].year, CSV_DELIMITER,
+                    BOOKS[i].genre, CSV_DELIMITER,
+                    BOOKS[i].price, CSV_DELIMITER,
                     BOOKS[i].count);
         } else {
             break;  // Dừng khi gặp slot trống
@@ -45,7 +49,7 @@ int read_books_from_csv() {
         return 0;
     }
 
-    char line[BUFFER_SIZE];
+    char line[CSV_BUFFER_SIZE];
     // Bỏ qua dòng tiêu đề
     fgets(line, sizeof(line), file);
 
@@ -103,9 +107,9 @@ void write_users_to_csv() {
 
     // Ghi tiêu đề cột
     fprintf(file,
-            "ID%sName%sGender%sEmail%sAddress%sBirth_Year%sBirth_Month%sBirth_"
-            "Day%sCreation_Year%sCreation_Month%sCreation_Day%sExp_Year%sExp_"
-            "Month%sExp_Day\n",
+            "id%sname%sgender%semail%saddress%sbirth_year%sbirth_month%sbirth_"
+            "day%screation_year%screation_month%screation_day%sexp_year%sexp_"
+            "month%sexp_day\n",
             CSV_DELIMITER, CSV_DELIMITER, CSV_DELIMITER, CSV_DELIMITER,
             CSV_DELIMITER, CSV_DELIMITER, CSV_DELIMITER, CSV_DELIMITER,
             CSV_DELIMITER, CSV_DELIMITER, CSV_DELIMITER, CSV_DELIMITER,
@@ -116,17 +120,23 @@ void write_users_to_csv() {
         if (USERS[i].id != 0) {
             fprintf(file,
                     "%d%s%s%s%d%s%s%s%s%s%d%s%d%s%d%s%d%s%d%s%d%s%d%s%d%s%d\n",
-                    USERS[i].id, CSV_DELIMITER, USERS[i].name, CSV_DELIMITER,
-                    USERS[i].gender, CSV_DELIMITER, USERS[i].email,
-                    CSV_DELIMITER, USERS[i].address, CSV_DELIMITER,
-                    USERS[i].birthdate[0], CSV_DELIMITER, USERS[i].birthdate[1],
-                    CSV_DELIMITER, USERS[i].birthdate[2], CSV_DELIMITER,
+                    USERS[i].id, CSV_DELIMITER,
+                    USERS[i].name, CSV_DELIMITER,
+                    USERS[i].gender, CSV_DELIMITER,
+                    USERS[i].email, CSV_DELIMITER,
+                    USERS[i].address, CSV_DELIMITER,
+                    USERS[i].birthdate[0], CSV_DELIMITER,
+                    USERS[i].birthdate[1], CSV_DELIMITER,
+                    USERS[i].birthdate[2], CSV_DELIMITER,
                     USERS[i].creation_date[0], CSV_DELIMITER,
                     USERS[i].creation_date[1], CSV_DELIMITER,
                     USERS[i].creation_date[2], CSV_DELIMITER,
                     USERS[i].expiration_date[0], CSV_DELIMITER,
                     USERS[i].expiration_date[1], CSV_DELIMITER,
                     USERS[i].expiration_date[2]);
+        }
+        else {
+            break;  // Dừng khi gặp slot trống
         }
     }
     fclose(file);
@@ -142,7 +152,7 @@ int read_users_from_csv() {
         return 0;
     }
 
-    char line[BUFFER_SIZE];
+    char line[CSV_BUFFER_SIZE];
     // Bỏ qua dòng tiêu đề
     fgets(line, sizeof(line), file);
 
@@ -220,9 +230,9 @@ void write_borrows_to_csv() {
 
     // Ghi tiêu đề cột
     fprintf(file,
-            "Card_ID%sUser_ID%sBorrow_Year%sBorrow_Month%sBorrow_Day%sExp_"
-            "Year%sExp_Month%sExp_Day%sActual_Year%sActual_Month%sActual_Day%s"
-            "ISBNs%sLate_Penalty%sLost_Penalties\n",
+            "card_id%suser_id%sborrow_year%sborrow_month%sborrow_day%sexp_"
+            "year%sexp_month%sexp_day%sactual_year%sactual_month%sactual_day%s"
+            "isbns%slate_penalty%slost_penalties\n",
             CSV_DELIMITER, CSV_DELIMITER, CSV_DELIMITER, CSV_DELIMITER,
             CSV_DELIMITER, CSV_DELIMITER, CSV_DELIMITER, CSV_DELIMITER,
             CSV_DELIMITER, CSV_DELIMITER, CSV_DELIMITER, CSV_DELIMITER,
@@ -281,7 +291,7 @@ int read_borrows_from_csv() {
         return 0;
     }
 
-    char line[BUFFER_SIZE * 2];
+    char line[CSV_BUFFER_SIZE * 2];
     // Bỏ qua dòng tiêu đề
     fgets(line, sizeof(line), file);
 

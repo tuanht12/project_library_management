@@ -147,10 +147,10 @@ void add_book(int isbn, int num_copies) {
     safe_input_str(BOOKS[new_book_index].genre,
                    sizeof(BOOKS[new_book_index].genre));
     printf("Nhập giá sách: ");
-    safe_scanf_int(BOOKS[new_book_index].price);
+    safe_scanf_long(BOOKS[new_book_index].price);
     while (BOOKS[new_book_index].price < 0) {
         printf("Giá sách không hợp lệ. Vui lòng nhập lại: ");
-        safe_scanf_int(BOOKS[new_book_index].price);
+        safe_scanf_long(BOOKS[new_book_index].price);
     }
     printf("Đã thêm sách mới với ISBN %d và số lượng %d\n", isbn, num_copies);
 }
@@ -160,7 +160,7 @@ void delete_book(int isbn) {
         if (BOOKS[i].isbn == isbn) {
             // Chuyển các sách phía sau lên trước để lấp khoảng trống
             int j = i;
-            ;
+
             while (j < MAX_BOOKS - 1 && BOOKS[j + 1].isbn != 0) {
                 BOOKS[j] = BOOKS[j + 1];
                 j++;
@@ -185,7 +185,7 @@ void print_book_info_by_isbn(int isbn, int with_header) {
             printf("Nhà xuất bản: %s\n", BOOKS[i].publisher);
             printf("Năm xuất bản: %d\n", BOOKS[i].year);
             printf("Thể loại: %s\n", BOOKS[i].genre);
-            printf("Giá sách: %d VND\n", BOOKS[i].price);
+            printf("Giá sách: %ld VND\n", BOOKS[i].price);
             printf("Số lượng hiện có: %d\n", BOOKS[i].count);
             return;
         }
@@ -248,13 +248,13 @@ void edit_book_info(int isbn) {
                 safe_input_str(BOOKS[i].genre, sizeof(BOOKS[i].genre));
             }
 
-            printf("Giá sách hiện tại: %d VND\n", BOOKS[i].price);
+            printf("Giá sách hiện tại: %ld VND\n", BOOKS[i].price);
             if (ask_to_edit_field()) {
                 printf("Nhập giá sách mới: ");
-                safe_scanf_int(BOOKS[i].price);
+                safe_scanf_long(BOOKS[i].price);
                 while (BOOKS[i].price < 0) {
                     printf("Giá sách không hợp lệ. Vui lòng nhập lại: ");
-                    safe_scanf_int(BOOKS[i].price);
+                    safe_scanf_long(BOOKS[i].price);
                 }
             }
 

@@ -12,7 +12,7 @@ struct Book {
     char publisher[MAX_STR_LEN];  // Nhà xuất bản
     int year;                     // Năm xuất bản
     char genre[MAX_STR_LEN];      // Thể loại
-    int price;                    // Giá sách (VND)
+    long price;                    // Giá sách (VND)
     int count;                    // Số lượng bản sao hiện có
 };
 

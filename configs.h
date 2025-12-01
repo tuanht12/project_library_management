@@ -18,9 +18,13 @@
 #define LOST_PENALTY_FACTOR 2
 /** Ký tự phân tách trong file CSV */
 #define CSV_DELIMITER "|"
+/**Ký tự phân tách con*/
+#define CSV_SUB_DELIMITER ";"
 /** Đường dẫn tới file CSV chứa dữ liệu sách */
 #define BOOKS_CSV_PATH "books.csv"
 /** Đường dẫn tới file CSV chứa dữ liệu người dùng */
 #define USERS_CSV_PATH "users.csv"
 /** Đường dẫn tới file CSV chứa dữ liệu phiếu mượn */
 #define BORROWS_CSV_PATH "borrows.csv"
+/** Kích thước bộ đệm đọc/ghi file CSV */
+#define CSV_BUFFER_SIZE 1024
