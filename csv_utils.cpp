@@ -24,7 +24,15 @@ void write_books_to_csv() {
     // Ghi dữ liệu sách
     for (int i = 0; i < MAX_BOOKS; i++) {
         if (BOOKS[i].isbn != 0) {
-            fprintf(file, "%d%s%s%s%s%s%s%s%d%s%s%s%ld%s%d\n",
+            fprintf(file, 
+                    "%d%s"
+                    "%s%s"
+                    "%s%s"
+                    "%s%s"
+                    "%d%s"
+                    "%s%s"
+                    "%ld%s"
+                    "%d\n",
                     BOOKS[i].isbn, CSV_DELIMITER,
                     BOOKS[i].name, CSV_DELIMITER,
                     BOOKS[i].author, CSV_DELIMITER,
@@ -119,7 +127,20 @@ void write_users_to_csv() {
     for (int i = 0; i < MAX_USERS; i++) {
         if (USERS[i].id != 0) {
             fprintf(file,
-                    "%d%s%s%s%d%s%s%s%s%s%d%s%d%s%d%s%d%s%d%s%d%s%d%s%d%s%d\n",
+                    "%d%s"
+                    "%s%s"
+                    "%d%s"
+                    "%s%s"
+                    "%s%s"
+                    "%d%s"
+                    "%d%s"
+                    "%d%s"
+                    "%d%s"
+                    "%d%s"
+                    "%d%s"
+                    "%d%s"
+                    "%d%s"
+                    "%d\n",
                     USERS[i].id, CSV_DELIMITER,
                     USERS[i].name, CSV_DELIMITER,
                     USERS[i].gender, CSV_DELIMITER,
@@ -134,8 +155,7 @@ void write_users_to_csv() {
                     USERS[i].expiration_date[0], CSV_DELIMITER,
                     USERS[i].expiration_date[1], CSV_DELIMITER,
                     USERS[i].expiration_date[2]);
-        }
-        else {
+        } else {
             break;  // Dừng khi gặp slot trống
         }
     }
@@ -241,7 +261,18 @@ void write_borrows_to_csv() {
     // Ghi dữ liệu phiếu mượn
     for (int i = 0; i < MAX_BORROW_RECORDS; i++) {
         if (BORROW_RECORDS[i].card_id != 0) {
-            fprintf(file, "%d%s%d%s%d%s%d%s%d%s%d%s%d%s%d%s%d%s%d%s%d%s",
+            fprintf(file, 
+                    "%d%s"
+                    "%d%s"
+                    "%d%s"
+                    "%d%s"
+                    "%d%s"
+                    "%d%s"
+                    "%d%s"
+                    "%d%s"
+                    "%d%s"
+                    "%d%s"
+                    "%d%s",
                     BORROW_RECORDS[i].card_id, CSV_DELIMITER,
                     BORROW_RECORDS[i].user_id, CSV_DELIMITER,
                     BORROW_RECORDS[i].borrow_date[0], CSV_DELIMITER,
@@ -258,7 +289,7 @@ void write_borrows_to_csv() {
             int has_isbn = 0;
             for (int j = 0; j < MAX_BORROWED_BOOKS; j++) {
                 if (BORROW_RECORDS[i].borrowed_isbns[j] != 0) {
-                    if (has_isbn) fprintf(file, ";");
+                    if (has_isbn) fprintf(file, CSV_SUB_DELIMITER);
                     fprintf(file, "%d", BORROW_RECORDS[i].borrowed_isbns[j]);
                     has_isbn = 1;
                 }
@@ -270,7 +301,7 @@ void write_borrows_to_csv() {
             int has_penalty = 0;
             for (int j = 0; j < MAX_BORROWED_BOOKS; j++) {
                 if (BORROW_RECORDS[i].borrowed_isbns[j] != 0) {
-                    if (has_penalty) fprintf(file, ";");
+                    if (has_penalty) fprintf(file, CSV_SUB_DELIMITER);
                     fprintf(file, "%ld", BORROW_RECORDS[i].lost_penalties[j]);
                     has_penalty = 1;
                 }
@@ -342,15 +373,10 @@ int read_borrows_from_csv() {
 
             // Đọc danh sách ISBN
             token = strtok(NULL, CSV_DELIMITER);
+            char raw_isbns[CSV_BUFFER_SIZE];
             if (token != NULL) {
-                token[strcspn(token, "\n")] = 0;
-                char* isbn_token = strtok(token, ";");
-                int j = 0;
-                while (isbn_token != NULL && j < MAX_BORROWED_BOOKS) {
-                    BORROW_RECORDS[index].borrowed_isbns[j] = atoi(isbn_token);
-                    isbn_token = strtok(NULL, ";");
-                    j++;
-                }
+                strcpy(raw_isbns, token);
+                raw_isbns[strcspn(raw_isbns, "\n")] = 0;
             }
 
             // Đọc phí phạt trễ
@@ -359,16 +385,31 @@ int read_borrows_from_csv() {
 
             // Đọc danh sách phí phạt mất sách
             token = strtok(NULL, CSV_DELIMITER);
+            char raw_penalties[CSV_BUFFER_SIZE];
             if (token != NULL) {
-                token[strcspn(token, "\n")] = 0;
-                char* penalty_token = strtok(token, ";");
-                int j = 0;
-                while (penalty_token != NULL && j < MAX_BORROWED_BOOKS) {
-                    BORROW_RECORDS[index].lost_penalties[j] =
-                        atol(penalty_token);
-                    penalty_token = strtok(NULL, ";");
-                    j++;
-                }
+                strcpy(raw_penalties, token);
+                raw_penalties[strcspn(raw_penalties, "\n")] = 0;
+            }
+
+            // Xử lý danh sách ISBN
+            char* isbn_token = strtok(raw_isbns, CSV_SUB_DELIMITER);
+            int isbn_index = 0;
+            while (isbn_token != NULL && isbn_index < MAX_BORROWED_BOOKS) {
+                BORROW_RECORDS[index].borrowed_isbns[isbn_index] =
+                    atoi(isbn_token);
+                isbn_token = strtok(NULL, CSV_SUB_DELIMITER);
+                isbn_index++;
+            }
+
+            // Xử lý danh sách phí phạt mất sách
+            char* penalty_token = strtok(raw_penalties, CSV_SUB_DELIMITER);
+            int penalty_index = 0;
+            while (penalty_token != NULL &&
+                   penalty_index < MAX_BORROWED_BOOKS) {
+                BORROW_RECORDS[index].lost_penalties[penalty_index] =
+                    atol(penalty_token);
+                penalty_token = strtok(NULL, CSV_SUB_DELIMITER);
+                penalty_index++;
             }
 
             index++;
