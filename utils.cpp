@@ -18,6 +18,11 @@ void safe_scanf_int(int& value) {
     scanf("%d", &value);
     cleanup_input_buffer();
 }
+
+void safe_scanf_long(long& value) {
+    scanf("%ld", &value);
+    cleanup_input_buffer();
+}
 int ask_to_edit_field() {
     printf(
         "Bạn muốn thay đổi không? Nhấn Enter để bỏ qua, gõ 'y' để thay đổi: ");

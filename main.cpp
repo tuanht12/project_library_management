@@ -3,23 +3,27 @@
 #include "book_ops.h"
 #include "books.h"
 #include "configs.h"
+#include "csv_utils.h"
 #include "datetime_utils.h"
 #include "menu.h"
 #include "users.h"
 #include "utils.h"
 int main() {
+    // Đọc dữ liệu sách từ file CSV
+    int num_current_books = read_books_from_csv();
+    int num_current_users = read_users_from_csv();
+    int num_current_borrows = read_borrows_from_csv();
     if (SHOULD_INIT_DATA_FOR_TESTING) {
         printf("Khởi tạo dữ liệu mẫu cho mục đích testing...\n");
-        initialize_user_data();
-        initialize_test_users();
-
-        initialize_book_data();
-        initialize_test_books();
-
-        initialize_borrow_data();
-        initialize_test_borrows();
+        if (!num_current_books) initialize_test_books();
+        if (!num_current_users) initialize_test_users();
+        if (!num_current_borrows) initialize_test_borrows();
     }
     initialize_current_date();
     display_main_menu();
+    // Lưu dữ liệu sách vào file CSV khi thoát chương trình
+    write_books_to_csv();
+    write_users_to_csv();
+    write_borrows_to_csv();
     return 0;
 }
