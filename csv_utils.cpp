@@ -33,10 +33,13 @@ void write_books_to_csv() {
                     "%s%s"
                     "%ld%s"
                     "%d\n",
-                    BOOKS[i].isbn, CSV_DELIMITER, BOOKS[i].name, CSV_DELIMITER,
-                    BOOKS[i].author, CSV_DELIMITER, BOOKS[i].publisher,
-                    CSV_DELIMITER, BOOKS[i].year, CSV_DELIMITER, BOOKS[i].genre,
-                    CSV_DELIMITER, BOOKS[i].price, CSV_DELIMITER,
+                    BOOKS[i].isbn, CSV_DELIMITER,
+                    BOOKS[i].name, CSV_DELIMITER,
+                    BOOKS[i].author, CSV_DELIMITER,
+                    BOOKS[i].publisher, CSV_DELIMITER,
+                    BOOKS[i].year, CSV_DELIMITER,
+                    BOOKS[i].genre, CSV_DELIMITER,
+                    BOOKS[i].price, CSV_DELIMITER,
                     BOOKS[i].count);
         } else {
             break;  // Dừng khi gặp slot trống
@@ -149,11 +152,14 @@ void write_users_to_csv() {
                     "%d%s"
                     "%d%s"
                     "%d\n",
-                    USERS[i].id, CSV_DELIMITER, USERS[i].name, CSV_DELIMITER,
-                    USERS[i].gender, CSV_DELIMITER, USERS[i].email,
-                    CSV_DELIMITER, USERS[i].address, CSV_DELIMITER,
-                    USERS[i].birthdate[0], CSV_DELIMITER, USERS[i].birthdate[1],
-                    CSV_DELIMITER, USERS[i].birthdate[2], CSV_DELIMITER,
+                    USERS[i].id, CSV_DELIMITER,
+                    USERS[i].name, CSV_DELIMITER,
+                    USERS[i].gender, CSV_DELIMITER,
+                    USERS[i].email, CSV_DELIMITER,
+                    USERS[i].address, CSV_DELIMITER,
+                    USERS[i].birthdate[0], CSV_DELIMITER,
+                    USERS[i].birthdate[1], CSV_DELIMITER,
+                    USERS[i].birthdate[2], CSV_DELIMITER,
                     USERS[i].creation_date[0], CSV_DELIMITER,
                     USERS[i].creation_date[1], CSV_DELIMITER,
                     USERS[i].creation_date[2], CSV_DELIMITER,
