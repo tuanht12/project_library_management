@@ -254,6 +254,9 @@ void print_all_users() {
             print_user_info(USERS[i].id, 0);
             printf("-----------------------------\n");
         }
+        else {
+            break;  // Dừng khi gặp slot trống đầu tiên
+        }
     }
 }
 

@@ -44,3 +44,4 @@ stats
 library_app
 # End of https://www.toptal.com/developers/gitignore/api/c++
 *.csv
+*.pdf

@@ -92,10 +92,20 @@ void print_all_books() {
     printf("\n===== Danh sách tất cả sách =====\n");
     for (int i = 0; i < MAX_BOOKS; i++) {
         if (BOOKS[i].isbn != 0) {
-            print_book_info_by_isbn(BOOKS[i].isbn, 0);
+            printf("ISBN: %d\n", BOOKS[i].isbn);
+            printf("Tên sách: %s\n", BOOKS[i].name);
+            printf("Tác giả: %s\n", BOOKS[i].author);
+            printf("Nhà xuất bản: %s\n", BOOKS[i].publisher);
+            printf("Năm xuất bản: %d\n", BOOKS[i].year);
+            printf("Thể loại: %s\n", BOOKS[i].genre);
+            printf("Giá sách: %ld VND\n", BOOKS[i].price);
+            printf("Số lượng hiện có: %d\n", BOOKS[i].count);
             printf("-----------------------------\n");
         }
+        else {
+            break;  // Dừng khi gặp sách chưa được khởi tạo
     }
+}
 }
 
 void add_book(int isbn, int num_copies) {

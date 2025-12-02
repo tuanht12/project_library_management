@@ -130,7 +130,7 @@ void show_borrow_return_menu() {
         printf("2. Tạo phiếu trả sách\n");
         printf("3. Xem danh sách tất cả phiếu mượn\n");
         printf("4. Xem danh sách phiếu mượn chưa trả\n");
-        printf("5. Xem danh sách phiếu trả\n");
+        printf("5. Xem danh sách phiếu trả đã hoàn tất\n");
         printf("9. Quay lại menu chính\n");
         printf("Hãy chọn một tùy chọn: ");
         safe_scanf_int(choice);
